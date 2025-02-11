@@ -1,0 +1,69 @@
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #CCE7FF !important; /* ohne important gehts nd - mocht de hintergrundfoab zua priorität */
+}
+
+.navbar-nav .nav-item {
+    position: relative;
+}
+
+.nav-link {
+    color: #333;
+    font-weight: bold;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+}
+
+.nav-link:hover {
+    color: #0056b3;
+    text-decoration: none;
+}
+
+.dropdown-menu {
+    display: none; /* Hide submenu by default */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.dropdown-item {
+    color: black;
+    padding: 10px 20px;
+    display: block;
+}
+
+.dropdown-item:hover {
+    background-color: #c0c2c5;
+}
+
+.nav-item:hover .dropdown-menu {
+    display: block;
+}
+
+table {
+    width: 80%;
+    margin: 10px 20px;
+    border-collapse: collapse;
+    padding: 20px;
+}
+
+th {
+    padding: 12px;
+    text-align: left;
+}
+
+td {
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    background-color: white;
+}

@@ -1,0 +1,42 @@
+/*newContentUpload*/
+.bg-info {
+    background-color: white !important;
+}
+
+.border-primary {
+    border-color: lightgrey !important;
+}
+
+input {
+    border-color: lightgrey !important;
+    border-radius: 5px;
+}
+
+#dropArea {
+    height: 200px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+
+#dataInput img,
+#dataInput video {
+    max-width: 70px;
+    max-height: 70px;
+    border-radius: 5px;
+}
+
+button.btn {
+    background-color: #633D00;
+    border-color: #633D00;
+    border-radius: 6px;
+}
+
+button.btn:hover {
+    background-color: #3b2500; 
+    border-color: #3b2500;
+    border-radius: 6px;
+}

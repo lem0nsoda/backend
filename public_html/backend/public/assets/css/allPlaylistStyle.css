@@ -1,0 +1,19 @@
+button.btn {
+    color: black !important;
+    border: none !important;
+}
+
+a.btn:hover {
+    background-color:none;
+}
+
+
+a.btn {
+    color: black !important;
+    border: none !important;
+}
+
+a.btn:hover {
+    background-color: none;
+}
+

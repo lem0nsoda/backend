@@ -1,0 +1,13 @@
+
+a.btn, #contentDazu {
+    background-color: #633D00 !important;
+    color: white !important;
+    border-color: #633D00;
+    border-radius: 6px;
+}
+
+a.btn:hover, #contentDazu:hover {
+    background-color: #3b2500; 
+    border-color: #3b2500;
+    border-radius: 6px;
+}

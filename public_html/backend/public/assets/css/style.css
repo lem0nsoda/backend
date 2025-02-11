@@ -1,0 +1,119 @@
+/*Menuleiste*/
+body {
+    background-color: #f7f7f7;
+    margin: 0;
+    padding-top: 56px; /* Platz für Navbar */
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 5px #999999;
+    background-color: #2B71AD !important; 
+    color: #f7f7f7;
+}
+
+.navbar-nav .nav-item {
+    position: relative;
+}
+
+.nav-link:hover {
+    color: #999999; /* Schriftfarbe beim Hover*/
+    background-color: #2B71AD;
+}
+
+.nav-link {
+    font-family: 'Arial', sans-serif; 
+    font-size: 16px; 
+    font-weight: normal; 
+    padding: 10px 20px;
+    display: flex;
+    align-items: center; 
+    gap: 5px; /* Abstand zwischen Icon und Text */
+    color: #f7f7f7; 
+}
+
+.dropdown-menu {
+    display: none; /* Submenu ausblenden */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #2B71AD;
+    border-radius: 10px;
+    border: none;
+}
+
+.dropdown-item {
+    font-family: 'Arial', sans-serif; 
+    font-size: 16px; 
+    font-weight: normal; 
+    color: #f7f7f7;
+    padding: 10px 20px;
+    display: block;
+}
+
+.dropdown-item:hover {
+    color: #999999; /* Schriftfarbe beim Hover*/
+    background-color: #2B71AD;
+}
+
+.nav-item:hover .dropdown-menu {
+    display: block;
+}
+
+/* Schrift */
+
+/* Adobe Fonts einbinden */
+@import url("https://use.typekit.net/xph3llu.css");
+
+
+h1 {
+    font-family: "TT Alientz", sans-serif !important;
+
+    color: #633D00 !important;
+    font-size: 220%;
+    padding: 20px;
+    text-align: center;
+    
+}
+
+h1 {
+    font-family: "TT Alientz", sans-serif !important;
+    font-weight: normal; /* oder 400, 700 etc. */
+}
+
+
+p{
+    color: black;
+    font-size: 110%;
+    padding: 20px;
+    text-align: left;
+}
+
+/* Buttons mit Bootstrap Icons */
+.btn.btn-sm.btn-outline-primary, .btn.btn-sm.btn-outline-danger {
+    color: black !important;
+    border: none !important;
+}
+
+.btn.btn-sm.btn-outline-primary:hover, .btn.btn-sm.btn-outline-danger:hover {
+    background-color: transparent !important;
+}
+
+
+button.btn {
+    background-color: #633D00;
+    border-color: #633D00;
+    border-radius: 6px;
+    color: white;
+}
+
+button.btn:hover {
+    background-color: #3b2500; 
+    border-color: #3b2500;
+    border-radius: 6px;
+    color: white;
+}
+
