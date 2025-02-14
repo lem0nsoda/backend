@@ -28,7 +28,7 @@
         <canvas id="lastOnlineChart"></canvas>
     </div>
 
-    <script src="<?= base_url('assets/js/statistikScript.js') ?>"></script>
+    <script src="<?= base_url('assets/js/statstikScript.js') ?>"></script>
 </body>
 </html>
 

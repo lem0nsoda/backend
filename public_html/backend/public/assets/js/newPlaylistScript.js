@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedContent = [];
 
     const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
-    var req = apiurl + "/content/get?limit=15";
+    var req = apiurl + "/content/get?limit=50";
 
     save.addEventListener('click', () => safePlaylist());
 
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let fileData = {
             name: name,
             duration: TotalDuration(),
-            created_by: 1       /// USERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+            created_by: 1       // USERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
         }
 
         fetch(req, {

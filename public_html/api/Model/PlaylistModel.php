@@ -22,7 +22,7 @@ class PlaylistModel extends Database{
                 break;
             case "plays_on": $allowed = ["id", "client_ID", "play_ID"];
                 break;
-            case "play_playlist": $allowed = ["id", "playlist_ID", "time"];
+            case "play_playlist": $allowed = ["id", "playlist_ID", "start"];
                 break;                    
         }
         return $allowed;

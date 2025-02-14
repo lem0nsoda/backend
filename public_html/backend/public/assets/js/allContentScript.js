@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .then(data => {
                 console.log('Deleted data:', data);
-                fetchData(sortOptions.value);
+                fetchData();
             })
             .catch(error => console.error('Error deleting data:', error));
         }
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
             fetch(req, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: id, name: newName })
+                body: JSON.stringify({ 'id': id, 'name': newName })
             })
             .then(response => {
                 console.log(newName);
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .then(data => {
                 console.log('Updated name:', data);
-                fetchData(sortOptions.value);
+                fetchData();
             })
             .catch(error => {
                 console.error('Error updating name:', error)
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 .then(data => {
                     console.log('Updated duration:', data);
-                    fetchData(sortOptions.value);
+                    fetchData();
                 })
                 .catch(error => console.error('Error updating duration:', error));
         }

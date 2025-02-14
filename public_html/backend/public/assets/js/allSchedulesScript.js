@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //zugriff auf PlaysOn daten per API
     function fetchPlayData() {
 
-        const req = apiurl + "/playlist/get?table=play_playlist";
+        const req = apiurl + "/playlist/get?table=play_playlist&limit=100";
         //fetch play playlist
         fetch(req)
             .then(response => {
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 .then(data => {
                     console.log('Deleted data:', data);
-                    fetchData(sortOptions.value);
+                    fetchData();
                 })
                 .catch(error => console.error('Error deleting data:', error));
         }
@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 .then(data => {
                     console.log('Updated name:', data);
-                    fetchData(sortOptions.value);
+                    fetchData();
                 })
                 .catch(error => console.error('Error updating name:', error));
         }
@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 .then(data => {
                     console.log('Updated duration:', data);
-                    fetchData(sortOptions.value);
+                    fetchData();
                 })
                 .catch(error => console.error('Error updating duration:', error));
         }
@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 .then(data => {
                     console.log('Updated duration:', data);
-                    fetchData(sortOptions.value);
+                    fetchData();
                 })
                 .catch(error => console.error('Error updating duration:', error));
         }

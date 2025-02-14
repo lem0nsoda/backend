@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
 
     const params = new URLSearchParams(window.location.search);
-    let playlistID = params.get('id');
+    const playlistID = params.get('id');
     
     let containsData = [];
     let contentData = [];
@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 console.log('Fetched data:', data);
-                playlistID = data[0].id;
                 populateDataTable(data[0]);
             })
             .catch(error => console.error('Error fetching playlist data:', error));
@@ -264,16 +263,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(data => {
                     console.log('Updated duration:', data);
                     reset();
+                    fetchPlaylistData();
                     fetchContainsData();
                 })
                 .catch(error => console.error('Error updating duration:', error));
         }
-
     };
 
     window.contentDazu = function() {
         console.log("add content");
-    }
+
+        const newContent = prompt("Content hinzufügen (id eingeben) : ");
+
+        if(!isNaN(newContent)){
+            console.log(newContent);
+            const req = apiurl + "/playlist/addPlaylistContains";
+
+            const data = { content_id: Number(newContent), playlist_id: Number(playlistID) };
+
+            console.log(data);
+
+            fetch(req, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Updated duration:', data);
+                    reset();
+                    fetchPlaylistData();
+                    fetchContainsData();
+                    updatePlaylistDuration();
+                })
+                .catch(error => console.error('Error updating duration:', error));
+
+        }
+    };
 
     fetchPlaylistData();
     fetchContainsData();

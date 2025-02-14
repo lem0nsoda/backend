@@ -12,7 +12,7 @@ $(document).ready(function () {
     const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
 
     function requestPlaylist(){
-        const req = apiurl + "/playlist/get?table=playlist";
+        const req = apiurl + "/playlist/get?table=playlist&limit=50";
         // Fetch-Daten vom Server abrufen
         fetch(req)
             .then(response => response.json())

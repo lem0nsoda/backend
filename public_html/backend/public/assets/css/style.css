@@ -101,19 +101,3 @@ p{
 .btn.btn-sm.btn-outline-primary:hover, .btn.btn-sm.btn-outline-danger:hover {
     background-color: transparent !important;
 }
-
-
-button.btn {
-    background-color: #633D00;
-    border-color: #633D00;
-    border-radius: 6px;
-    color: white;
-}
-
-button.btn:hover {
-    background-color: #3b2500; 
-    border-color: #3b2500;
-    border-radius: 6px;
-    color: white;
-}
-

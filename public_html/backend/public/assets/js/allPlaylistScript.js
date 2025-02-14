@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 .then(data => {
                     console.log('Deleted data:', data);
-                    fetchData(sortOptions.value);
+                    fetchData();
                 })
                 .catch(error => console.error('Error deleting data:', error));
         }

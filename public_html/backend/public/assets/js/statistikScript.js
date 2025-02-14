@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
     let chart;
 
+    
+    console.log(apiurl);
+
     //update the chart
     function updateChart(usernames, usageCounts, headingText, xAxisLabel, yAxisLabel) {
         document.getElementById('heading').textContent = headingText;
@@ -46,12 +49,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //button aufruf funktionen
     window.handleContentUpload = function () {
-        let req = apiurl + "/content/get?by=created_by&limit=100";
+        let req = apiurl + "/content/get?by=added_by&limit=100";
 
-        fetch(req)
-            .then(response => response.json())
+        console.log("hello");
+
+       /* fetch(req)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
             .then(data => {
-                console.log(data);
+                console.log('Fetched data:', data);
 
                 /*const groupedData = data.reduce((acc, content) => {
                     const creator = content.added_by;
@@ -61,12 +69,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const usernames = Object.keys(groupedData);
                 const usageCounts = Object.values(groupedData);
-                updateChart(usernames, usageCounts, "Statistik: Contentupload von Benutzern", "Benutzer", "Anzahl der Uploads");*/
+                updateChart(usernames, usageCounts, "Statistik: Contentupload von Benutzern", "Benutzer", "Anzahl der Uploads");
             })
             .catch(error => console.error('Error fetching content data:', error));
+            */
     };
 
     window.handlePlaylistCreation = function () {
+
+        console.log("playlist create");
+        /*
         fetch('/playlists')
             .then(response => response.json())
             .then(data => {
@@ -80,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const usageCounts = Object.values(groupedData);
                 updateChart(usernames, usageCounts, "Statistik: Playlisterstellung von Benutzern", "Benutzer", "Anzahl der Playlists");
             })
-            .catch(error => console.error('Error fetching playlist data:', error));
+            .catch(error => console.error('Error fetching playlist data:', error));*/
     };
 
     window.handleContentUsage = function () {

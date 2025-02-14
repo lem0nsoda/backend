@@ -90,12 +90,8 @@ document.addEventListener('DOMContentLoaded', function () {
     //TABELLE
 
     const tableBody = document.querySelector('#content-table tbody');
-    const sortOptions = document.querySelector('#sort-options');
 
     function fetchData(sortOption = 'id-asc') {
-        
-        const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
-
         sort = sortOption.split('-');
 
         const req = apiurl + "/client/get?by=" + sort[0] + "&order=" + sort[1];
@@ -152,7 +148,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     window.deleteRow = function(id) {
         if (confirm('Möchten Sie diesen Eintrag wirklich löschen?')) {
-            const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
             fetch(`${apiurl}/client/delete`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -164,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .then(data => {
                     console.log('Deleted data:', data);
-                    fetchData(sortOptions.value);
+                    fetchData();
                 })
                 .catch(error => console.error('Error deleting data:', error));
         }
@@ -173,7 +168,6 @@ document.addEventListener('DOMContentLoaded', function () {
     window.editName = function(id) {
         const newName = prompt('Neuer Gerätename:');
         if (newName) {
-            const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
             fetch(`${apiurl}/client/update`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -185,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .then(data => {
                     console.log('Updated name:', data);
-                    fetchData(sortOptions.value);
+                    fetchData();
                 })
                 .catch(error => console.error('Error updating name:', error));
         }
