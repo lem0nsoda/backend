@@ -19,6 +19,13 @@ class ContentModel extends Database
 
     // per ... suchen
     public function getBy($where, $is){
+
+        $allowedWhere = ["id", "name", "type", "width", "height", "duration", "times_used", "last_use", "added_by", "added_at"];
+
+        if (!in_array($where, $allowedWhere)) {
+            throw new Exception("Invalid parameter name.");
+        }
+
         $result =  $this->select("SELECT * FROM content WHERE $where=?", ["s", $is]);
         
         return $result ?? [];
@@ -38,6 +45,23 @@ class ContentModel extends Database
         }
 
         $result =  $this->select("SELECT * FROM content ORDER BY $by $order LIMIT ? OFFSET ?", ["ii", $limit, $offset]);
+
+        return $result ?? [];
+    }
+
+    public function getInfo($by, $order, $limit, $offset){
+        $order = strtoupper($order); 
+        $allowedOrder = ["ASC", "DESC"];
+        $allowedBy = ["id", "name", "type", "width", "height", "duration", "times_used", "last_use", "added_by", "added_at"];
+                
+        if (!in_array($order, $allowedOrder)) {
+            throw new Exception("Invalid order name.");
+        }
+        if (!in_array($by, $allowedBy)) {
+            throw new Exception("Invalid parameter name.");
+        }
+
+        $result =  $this->select("SELECT id, name, type,  width, height, duration, times_used, last_use, added_by, added_at FROM content ORDER BY $by $order LIMIT ? OFFSET ?", ["ii", $limit, $offset]);
 
         return $result ?? [];
     }
@@ -80,6 +104,21 @@ class ContentModel extends Database
             $duration,
             $times_used,
             $last_use,
+            $id
+        ];
+
+        return $this->update($query, $params);
+    }
+
+//sql anweisung zum aktualisieren von last Use und times Used von client
+    public function updateUsed($id, $time, $used){
+
+        $query = "UPDATE content SET last_use=?, times_used=? WHERE id=?";
+
+        $params = [
+            "sii", // Types: s = string, i = integer, b = bit
+            $time,
+            $used,
             $id
         ];
 

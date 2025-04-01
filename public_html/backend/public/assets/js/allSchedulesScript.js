@@ -74,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
              // Wenn alle Dateien erfolgreich hochgeladen wurden, leere das Array
              if (fetched === play_playlist.length) {
                 
-                console.log("clients: " + playClients.get(9));
                 fetchPlaylistData(play_playlist);
              }
          })
@@ -87,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         var fetched = 0;
 
         const uploadPromises = play_playlist.map(play =>  {
-            req = apiurl + "/playlist/getThis?table=playlist&id=" + play.playlist_id;
+            req = apiurl + "/playlist/getThis?table=playlist&id=" + play.playlist_ID;
 
             return fetch(req)
                 .then(response => {
@@ -119,25 +118,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function populateTable(playlist, play_playlist) {
+        let clientInfo = JSON.parse(playClients.get(play_playlist.id));
+        console.log(clientInfo);
+
         tableBody.innerHTML += `
         <tr>
-            <td>${play_playlist.id}</td> 
-            <td>${playlist.id}</td> 
-            <td>${playlist.name}</td> 
+            <td>
+                ${play_playlist.id}
+            </td> 
+            <td>
+                ${playlist.id}
+            </td> 
+            <td>
+                ${playlist.name}
+            </td> 
             <td>
                 <button class="btn btn-sm btn-outline-primary ms-2" onclick="editStart(${play_playlist.id})">
                     <i class="bi bi-pencil"></i>
                 </button>
                 ${play_playlist.start}
             </td> 
-            <td>${playlist.duration}</td> 
-            <td>     
-                <button class="btn btn-sm btn-outline-primary ms-2" onclick="editClients(${play_playlist.id})">
-                    <i class="bi bi-pencil"></i>
-                </button>
-                ${playClients.get(play_playlist.id).client}
+            <td>
+                ${playlist.duration}
             </td> 
-            <td>${playlist.created_by}</td> 
+            <td>     
+                ${clientInfo.client}
+            </td> 
+            <td>
+                ${playlist.created_by}
+            </td> 
             <td>
                 <button class="btn btn-sm btn-outline-danger" onclick="deleteRow(${play_playlist.id})">
                     <i class="bi bi-trash3"></i>
@@ -149,8 +158,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.deleteRow = function(id) {
         if (confirm('Möchten Sie diesen Eintrag wirklich löschen?')) {
-            const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
-            fetch(`${apiurl}/content/delete/${id}`, { method: 'DELETE' })
+            fetch(`${apiurl}/playlist/delete`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ table: 'play_playlist', id: id })
+                })
                 .then(response => {
                     if (!response.ok) throw new Error('Network response was not ok');
                     return response.json();
@@ -163,66 +175,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    window.editName = function(id) {
-        const newName = prompt('Neuer Dateiname:');
-        if (newName) {
-            const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
-            fetch(`${apiurl}/content/update/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name: newName })
-            })
-                .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Updated name:', data);
-                    fetchData();
-                })
-                .catch(error => console.error('Error updating name:', error));
-        }
-    };
-
-    window.editClients = function(id) {
-        const newDuration = prompt('Clients:');
-        if (newDuration) {
-            const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
-            fetch(`${apiurl}/content/update/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ duration: newDuration })
-            })
-                .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Updated duration:', data);
-                    fetchData();
-                })
-                .catch(error => console.error('Error updating duration:', error));
-        }
-    };
-
     window.editStart = function(id) {
-        const newDuration = prompt('Neuer Startzeitpunkt:');
-        if (newDuration) {
-            const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
-            fetch(`${apiurl}/content/update/${id}`, {
-                method: 'PUT',
+        const newStart = prompt('Neuer Startzeitpunkt:');
+        if (newStart) {
+            fetch(`${apiurl}/playlist/update`, {
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ duration: newDuration })
+                body: JSON.stringify({ table: 'play_playlist', id: id, start: newStart })
             })
                 .then(response => {
                     if (!response.ok) throw new Error('Network response was not ok');
                     return response.json();
                 })
                 .then(data => {
-                    console.log('Updated duration:', data);
+                    console.log('Updated start:', data);
                     fetchData();
                 })
-                .catch(error => console.error('Error updating duration:', error));
+                .catch(error => console.error('Error updating start:', error));
         }
     };
 

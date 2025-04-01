@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Schedules</title>
+    <title>Digital Signage - All Schedules</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- für tabellensorteirung mit datatables-->
@@ -28,8 +28,8 @@
                     <th data-dt-column='1'>Playlist-ID</th>    
                     <th data-dt-column='2'>Playlistname</th>
                     <th data-dt-column='3'>Start-Zeitpunkt</th>
-                    <th data-dt-column='4'>Dauer</th>
-                    <th data-dt-column='5'>auf Clients (id name)</th>
+                    <th data-dt-column='4'>Dauer [Sek.]</th>
+                    <th data-dt-column='5'>auf Clients (ID)</th>
                     <th data-dt-column='6'>von Benutzer erstellt</th>
                     <th>löschen</th>
                 </tr>

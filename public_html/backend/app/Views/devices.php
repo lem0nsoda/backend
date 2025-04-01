@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clients Übersicht</title>
+    <title>Digital Signage - Clients</title>
     <link rel="stylesheet" href="<?= base_url('assets/css/devicesStyle.css') ?>">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -29,9 +29,10 @@
                 <tr>
                     <th data-dt-column='0'>ID</th>
                     <th data-dt-column='1'>Name</th>
-                    <th data-dt-column='2'>Größe(X/Y)</th>
-                    <th data-dt-column='3'>Status</th>
-                    <th data-dt-column='4'>Löschen</th>
+                    <th data-dt-column='2'>Größe (b x l)</th>
+                    <th data-dt-column='3'>Position(X/Y)</th>
+                    <th data-dt-column='4'>Status</th>
+                    <th data-dt-column='5'>Löschen</th>
                 </tr>
             </thead>
 
@@ -39,6 +40,7 @@
                 <!-- zeilen kommen hierhin -->
             </tbody>
         </table>
+
     </div>
     <script src="<?= base_url('assets/js/devicesScript.js') ?>"></script>
 </body>

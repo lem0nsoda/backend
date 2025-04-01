@@ -40,13 +40,6 @@ class LoginController extends BaseController
 
             <div id="errorField"></div>
 
-            <button id="b" title="client" onclick="client()" class="btn">Client-View</button>
-        
-            <script>
-                function client(){
-                    window.location.href = '<?= site_url("menu/client") ?>';
-                }
-            </script>
                 
         </body>
         </html>

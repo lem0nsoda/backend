@@ -12,7 +12,7 @@ body {
     z-index: 1000;
     box-shadow: 0 2px 5px #999999;
     background-color: #2B71AD !important; 
-    color: #f7f7f7;
+    color: #f7f7f7 !important;
 }
 
 .navbar-nav .nav-item {
@@ -32,7 +32,7 @@ body {
     display: flex;
     align-items: center; 
     gap: 5px; /* Abstand zwischen Icon und Text */
-    color: #f7f7f7; 
+    color: #f7f7f7 !important; 
 }
 
 .dropdown-menu {
@@ -43,6 +43,7 @@ body {
     background-color: #2B71AD;
     border-radius: 10px;
     border: none;
+    color: #f7f7f7;
 }
 
 .dropdown-item {
@@ -61,29 +62,19 @@ body {
 
 .nav-item:hover .dropdown-menu {
     display: block;
+    color: #999999;
+    background-color: #2B71AD;
 }
 
 /* Schrift */
 
-/* Adobe Fonts einbinden */
-@import url("https://use.typekit.net/xph3llu.css");
-
-
 h1 {
-    font-family: "TT Alientz", sans-serif !important;
-
     color: #633D00 !important;
     font-size: 220%;
     padding: 20px;
     text-align: center;
     
 }
-
-h1 {
-    font-family: "TT Alientz", sans-serif !important;
-    font-weight: normal; /* oder 400, 700 etc. */
-}
-
 
 p{
     color: black;
@@ -100,4 +91,9 @@ p{
 
 .btn.btn-sm.btn-outline-primary:hover, .btn.btn-sm.btn-outline-danger:hover {
     background-color: transparent !important;
+}
+
+button:focus, .btn:focus {
+    outline: none !important;
+    box-shadow: none !important;
 }

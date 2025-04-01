@@ -6,31 +6,34 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedContent = [];
 
     const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
-    var req = apiurl + "/content/get?limit=50";
+    var req = apiurl + "/content/getInfo?limit=50";
+
+    var userID = 1;  // USER
 
     save.addEventListener('click', () => safePlaylist());
 
-    // Fetch data from the server
     fetch(req)
         .then(response => response.json())
         .then(data => {
             populateTable(data)
-            
             new DataTable('#content-table');
+            loadContentPreviews(data);
         })
         .catch(error => console.error('Error fetching data:', error));
 
-    // Tabelle 
     function populateTable(data) {
         tableBody.innerHTML = data.map(item => `
-            <tr draggable="true" data-json='${JSON.stringify(item)}'>
+            <tr draggable="true" data-json='${JSON.stringify(item)}' data-id="${item.id}" data-type="${item.type}">
+                <td class="preview-cell" style="text-align: center; vertical-align: middle;"></td>
+                
                 <td>${item.name}</td>
                 <td>${item.duration}</td>
                 <td>${item.type}</td>
             </tr>
         `).join('');
+//<td class="preview-cell"><img src="${item.data}" class="preview-img"></td>
 
-        // Drag-Event für Tabellenzeilen
+
         document.querySelectorAll('#content-table tr').forEach(row => {
             row.addEventListener('dragstart', e => {
                 e.dataTransfer.setData('text/plain', row.dataset.json);
@@ -38,43 +41,91 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Rechte Vorschau-Box: Drag-and-Drop ermöglichen
+
+    function loadContentPreviews(rows) {
+        rows.forEach(row => {
+            const cell = document.querySelector(`tr[data-id='${row.id}'] .preview-cell`);
+            
+            fetch(`${apiurl}/content/getThis?id=${row.id}`)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    if (data[0].data.includes("image")) {
+                        const img = document.createElement("img");
+                        img.src = data[0].data;
+                        img.style.height = "25px";
+                        img.style.width = "auto";
+                        img.style.display = "block";
+                        img.style.margin = "auto";
+                        cell.appendChild(img);
+                    } else if (data[0].data.includes("video")) {
+                        const img = document.createElement("img");
+                        img.src = `${data[0].data}#t=0.1`; // Versucht, das erste Frame zu laden
+                        img.style.height = "25px";
+                        img.style.width = "auto";
+                        img.style.display = "block";
+                        img.style.margin = "auto";
+                        cell.appendChild(img);
+                    }
+                })
+                .catch(error => console.error('Error loading preview:', error));
+        });
+    }
+
     previewArea.addEventListener('dragover', e => e.preventDefault());
     previewArea.addEventListener('drop', e => {
         e.preventDefault();
         const item = JSON.parse(e.dataTransfer.getData('text/plain'));
-
-        const data  = {
-            content: item.id,
-            order: 0,
-            duration: item.duration
-        }
-
-        selectedContent.push(JSON.stringify(data));
-        console.log(selectedContent);
+        selectedContent.push(JSON.stringify(item));
         addToPreview(item);
     });
 
     function addToPreview(item) {
-
         const div = document.createElement('div');
         div.className = 'preview-item';
         div.dataset.dauer = item.duration;
         div.dataset.contentId = item.id;
 
         div.innerHTML = `
-            <span>${item.name} (${item.type})</span>
-            <div>
-                <button class="btn btn-sm btn-outline-danger decrease-btn">-</button>
-                <span class="duration">${item.duration}s</span>
-                <button class="btn btn-sm btn-outline-success increase-btn">+</button>
+            <div class="preview-thumbnail">
+                <img class="preview-img" preview-id="${item.id}">
+            </div>
+            <div class="preview-details">
+                <span class="file-name">${item.name}</span>
+                <span class="file-type">${item.type}</span>
+                <div class="controls">
+                    <button class="minus">-</button>
+                    <span class="duration">${item.duration}s</span>
+                    <button class="plus">+</button>
+                </div>
             </div>
         `;
 
-        // Buttons hinzufügen für Dauer-Steuerung
-        const decreaseBtn = div.querySelector('.decrease-btn');
-        const increaseBtn = div.querySelector('.increase-btn');
+        fetch(`${apiurl}/content/getThis?id=${item.id}`)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    
+                    const previewContent = document.querySelector(`img[preview-id='${data[0].id}']`);
 
+                    if (previewContent) {
+                        previewContent.setAttribute("src", data[0].data);  // Using setAttribute
+                    } else {
+                        console.error('Preview image element not found');
+                    }
+                    
+                })
+                .catch(error => console.error('Error loading preview:', error));
+
+        
+
+        const decreaseBtn = div.querySelector('.minus');
+        const increaseBtn = div.querySelector('.plus');
         const durationSpan = div.querySelector('.duration');
 
         decreaseBtn.addEventListener('click', () => adjustDuration(div, durationSpan, -1));
@@ -83,25 +134,15 @@ document.addEventListener('DOMContentLoaded', () => {
         previewArea.appendChild(div);
         TotalDuration();
 
-        // Sortierung der Elemente in der Vorschau ermöglichen
-        new Sortable(previewArea, {
-            //Dauer der Anzeige bei verschiebung von inhalt
-            animation: 150,
-        });
+        new Sortable(previewArea, { animation: 150 });
     }
 
     function adjustDuration(element, durationSpan, change) {
         let currentDuration = parseInt(element.dataset.dauer);
-
-        if(isNaN(currentDuration))
-            currentDuration = 0;
-
-        currentDuration = Math.max(0, currentDuration + change); // Keine negative Dauer
+        currentDuration = Math.max(0, currentDuration + change);
         element.dataset.dauer = currentDuration;
         durationSpan.textContent = `${currentDuration}s`;
-
         TotalDuration();
-        //updateContainsDuration(element.dataset.contentId, currentDuration);
     }
 
     function TotalDuration() {
@@ -124,9 +165,18 @@ document.addEventListener('DOMContentLoaded', () => {
         let fileData = {
             name: name,
             duration: TotalDuration(),
-            created_by: 1       // USERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+            created_by: userID      
         }
 
+        //user benutzen
+        fetch(`${apiurl}/user/use?id=${userID}`)
+        .then(response => response.json()) // Antwort als JSON parsen
+        .then(data => {})
+        .catch(error => {
+            console.error('Fehler beim Hinzufügen des Inhalts:', error); // Fehlerbehandlung
+        });
+
+        //playlist speichern
         fetch(req, {
             method: 'POST', // HTTP-Methode
             headers: {
@@ -156,6 +206,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const uploadPromises = [...previewArea.children].map(content => {
             if(content.dataset.contentId){
+
+            //contnet benutzen
+                fetch(`${apiurl}/content/use?id=${content.dataset.contentId}`)
+                .then(response => response.json()) // Antwort als JSON parsen
+                .then(data => {})
+                .catch(error => {
+                    console.error('Fehler beim Hinzufügen des Inhalts:', error); // Fehlerbehandlung
+                });
+
                 toUpload ++;
 
                 fileData = {

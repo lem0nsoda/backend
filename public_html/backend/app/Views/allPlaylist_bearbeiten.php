@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Playlists</title>
+    <title>Digital Signage - All Playlists</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= base_url('assets/css/allPlaylistBearbeitenStyle.css') ?>">
 
@@ -30,10 +30,10 @@
     <div class="container my-3">
         <table class="table table-striped table-bordered" id="content-table">  
             <thead class="table-dark">
-                <th data-dt-column='0'>reihenfolge</th>
-                <th data-dt-column='1'>id - name</th>
-                <th data-dt-column='2'>dauer</th>
-                <th>entfernen</th>
+                <th data-dt-column='0'>Reihenfolge</th>
+                <th data-dt-column='1'>ID - Name</th>
+                <th data-dt-column='2'>Dauer [Sek.]</th>
+                <th>löschen</th>
             </thead>    
         
             <tbody>

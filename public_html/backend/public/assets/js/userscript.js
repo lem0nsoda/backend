@@ -37,6 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${user.username}</td>
             </tr>
             <tr>
+                <td><strong>Password:</strong></td>
+                <td>${user.password}</td>
+            </tr>
+            <tr>
                 <td><strong>Zuletzt Online:</strong></td>
                 <td>${new Date(user.last_online).toLocaleDateString()}</td>
             </tr>
@@ -45,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${new Date(user.created_at).toLocaleDateString()}</td>
             </tr>
             <tr>
-                <td><strong>Rechte:</strong></td>
+                <td><strong>Schreibrechte:</strong></td>
                 <td>${user.rights ? 'Ja' : 'Nein'}</td>
             </tr>
         `;

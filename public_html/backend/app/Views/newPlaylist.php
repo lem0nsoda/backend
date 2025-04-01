@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?= base_url('assets/css/newPlaylistStyle.css') ?>">
-    <title>Playlist erstellen</title>
+    <title>Digital Signage - Playlist erstellen</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 
@@ -27,6 +27,7 @@
             <table class="table table-striped" id="content-table">
                 <thead class="table-dark">
                     <tr>
+                        <th data-dt-column='0'>Vorschau</th>
                         <th data-dt-column='0'>Dateiname</th>
                         <th data-dt-column='1'>Dauer</th>
                         <th data-dt-column='2'>Dateityp</th>
@@ -47,7 +48,7 @@
             <button class="btn btn-primary" id="save-playlist">Playlist speichern</button>
         </div>
     </div>
-    
+     
     <script src="<?= base_url('assets/js/newPlaylistScript.js') ?>"></script>
 </body>
 </html>

@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('heading').textContent = headingText;
 
         if (chart) {
-            chart.destroy(); // Destroy existing chart before creating a new one
+            chart.destroy(); 
         }
 
         chart = new Chart(ctx, {
@@ -46,73 +46,144 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //button aufruf funktionen
     window.handleContentUpload = function () {
-        let req = apiurl + "/content/get?by=created_by&limit=100";
+        let req = apiurl + "/content/get?by=added_by&limit=100";
 
         fetch(req)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
 
-                /*const groupedData = data.reduce((acc, content) => {
-                    const creator = content.added_by;
-                    acc[creator] = (acc[creator] || 0) + 1;
-                    return acc;
-                }, {});
+                if(data[0]){
+                    var userID = [];
+                    var countUser = new Map();
+                    var count = [];
 
-                const usernames = Object.keys(groupedData);
-                const usageCounts = Object.values(groupedData);
-                updateChart(usernames, usageCounts, "Statistik: Contentupload von Benutzern", "Benutzer", "Anzahl der Uploads");*/
+                    data.map(content => {
+                        if(!userID.includes(content.added_by)){
+                            userID.push(content.added_by);
+                            countUser.set(content.added_by, 0);
+                        }
+                        else{
+                            var old = countUser.get(content.added_by);
+                            countUser.set(content.added_by, old+1);
+                        }
+                    });
+
+                    for(let i = 0; i < userID.length; i++){
+                        count[i] = countUser.get(userID[i]);
+                    }
+
+                    updateChart(userID, count, "Statistik", "Benutzer", "Anzahl der Uploads");
+          
+                }
             })
             .catch(error => console.error('Error fetching content data:', error));
     };
 
     window.handlePlaylistCreation = function () {
-        fetch('/playlists')
+        fetch(`${apiurl}/playlist/get?table=playlist&by=created_by&limit=100`)
             .then(response => response.json())
             .then(data => {
-                const groupedData = data.reduce((acc, playlist) => {
-                    const creator = playlist.created_by;
-                    acc[creator] = (acc[creator] || 0) + 1;
-                    return acc;
-                }, {});
+                console.log(data);
+                if(data[0]){
+                    var userID = [];
+                    var countUser = new Map();
+                    var count = [];
 
-                const usernames = Object.keys(groupedData);
-                const usageCounts = Object.values(groupedData);
-                updateChart(usernames, usageCounts, "Statistik: Playlisterstellung von Benutzern", "Benutzer", "Anzahl der Playlists");
+                    data.map(playlist => {
+                        if(!userID.includes(playlist.created_by)){
+                            userID.push(playlist.created_by);
+                            countUser.set(playlist.created_by, 0);
+                        }
+                        else{
+                            var old = countUser.get(playlist.created_by);
+                            countUser.set(playlist.created_by, old+1);
+                        }
+                    });
+
+                    for(let i = 0; i < userID.length; i++){
+                        count[i] = countUser.get(userID[i]);
+                    }
+
+                }
+
+                updateChart(userID, count, "Statistik", "Benutzer-ID", "Anzahl der erstellten Playlists");
             })
             .catch(error => console.error('Error fetching playlist data:', error));
     };
 
     window.handleContentUsage = function () {
-        fetch('/content')
+        fetch(`${apiurl}/content/getInfo?by=added_by&limit=100`)
             .then(response => response.json())
             .then(data => {
-                const usernames = data.map(content => content.name);
-                const usageCounts = data.map(content => content.times_used);
-                updateChart(usernames, usageCounts, "Statistik: Content-Verwendung", "Content", "Verwendungshäufigkeit");
+                console.log(data);
+                if(data[0]){
+                    var contentID = [];
+                    var countContent = new Map();
+                    var count = [];
+
+                    data.map(content => {
+                        if(!contentID.includes(content.id)){
+                            contentID.push(content.id);
+                            countContent.set(content.id, content.times_used);
+                        }
+                        else{
+                            countContent.set(content.id, content.times_used);
+                        }
+                    });
+
+                    for(let i = 0; i < contentID.length; i++){
+                        count[i] = countContent.get(contentID[i]);
+                    }
+
+                    updateChart(contentID, count, "Statistik", "Content-ID", "Anzahl der Benutzungen");
+                }
             })
             .catch(error => console.error('Error fetching content data:', error));
     };
 
     window.handlePlaylistUsage = function () {
-        fetch('/playlists')
+        fetch(`${apiurl}/playlist/get?table=playlist&limit=100`)
             .then(response => response.json())
             .then(data => {
-                const usernames = data.map(playlist => playlist.title);
-                const usageCounts = data.map(playlist => playlist.times_used);
-                updateChart(usernames, usageCounts, "Statistik: Playlist-Verwendung", "Playlists", "Verwendungshäufigkeit");
+                console.log(data);
+                if(data[0]){
+                    var playlistID = [];
+                    var countPlaylist = new Map();
+                    var count = [];
+
+                    data.map(playlist => {
+                        if(!playlistID.includes(playlist.id)){
+                            playlistID.push(playlist.id);
+                            countPlaylist.set(playlist.id, playlist.times_used);
+                        }
+                        else{
+                            countPlaylist.set(playlist.id, playlist.times_used);
+                        }
+                    });
+
+                    for(let i = 0; i < playlistID.length; i++){
+                        count[i] = countPlaylist.get(playlistID[i]);
+                    }
+
+                    updateChart(playlistID, count, "Statistik", "Playlist-ID", "Anzahl der Benutzungen");
+                }
             })
-            .catch(error => console.error('Error fetching playlist data:', error));
+            .catch(error => console.error('Error fetching content data:', error));
     };
 
-    window.handleUsersOnline = function () {
-        fetch('/users')
-            .then(response => response.json())
-            .then(data => {
-                const usernames = data.map(user => user.username);
-                const usageCounts = data.map(user => user.times_used);
-                updateChart(usernames, usageCounts, "Statistik: Benutzer online", "Benutzer", "Online-Zeit");
-            })
-            .catch(error => console.error('Error fetching user data:', error));
-    };
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.button-container .btn');
+
+    buttons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Entferne die "active"-Klasse von allen Buttons
+            buttons.forEach(btn => btn.classList.remove('active'));
+            // Füge die "active"-Klasse zum geklickten Button hinzu
+            this.classList.add('active');
+        });
+    });
+});
+

@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users</title>
+    <title>Digital Signage - Users</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= base_url('assets/css/users_newstyle.css') ?>">
 </head>
@@ -26,8 +26,8 @@
             <div class="mb-3">
                 <label for="rights" class="form-label">Rechte</label>
                 <select class="form-select" id="rights">
-                    <option value="true">Ja</option>
                     <option value="false">Nein</option>
+                    <option value="true">Ja</option>
                 </select>
             </div>
             <button type="button" class="btn btn-primary" id="save-button">Speichern</button>

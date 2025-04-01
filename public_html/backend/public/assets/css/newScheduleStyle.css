@@ -2,8 +2,9 @@ body {
     font-family: Arial, sans-serif;
 }
 
-h1, h2, h3 {
+h3 {
     color: #003563; 
+    font-size: 150% !important;
 }
 
 .table-dark {
@@ -47,8 +48,15 @@ input.form-control {
     font-size: 18px;
 }
 
-#year{
-    width: 80px;
+#day, #month, #start-time{
+    width: 85px;
+    margin-right: 5px;
+    margin-top: 10px;
+}
+
+#howoften{
+    width: 85px;
+    margin-left: -15px;
 }
 
 button.btn {
@@ -58,20 +66,36 @@ button.btn {
 }
 
 a.btn:hover {
-    background-color: #3b2500; 
-    border-color: #3b2500;
+    background-color: #3b2500 !important; 
+    border-color: #3b2500 !important;
     border-radius: 6px;
 }
 
 
 a.btn {
-    background-color: #633D00;
-    border-color: #633D00;
+    background-color: #633D00 !important;
+    border-color: #633D00 !important;
     border-radius: 6px;
 }
 
 a.btn:hover {
-    background-color: #3b2500; 
-    border-color: #3b2500;
+    background-color: #3b2500 !important; 
+    border-color: #3b2500 !important;
     border-radius: 6px;
+}
+
+#save-button{
+    margin-bottom: 5px;
+    margin-right: 115px;
+    background-color: #633D00 !important;
+    border-color: #633D00 !important;
+    border-radius: 6px;
+    color: white;
+}
+
+#save-button:hover {
+    background-color: #3b2500 !important; 
+    border-color: #3b2500 !important;
+    border-radius: 6px;
+    color: white !important;
 }

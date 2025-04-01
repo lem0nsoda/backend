@@ -25,8 +25,13 @@ input {
 #dataInput img,
 #dataInput video {
     max-width: 70px;
+    border-color: lightgrey !important;
     max-height: 70px;
     border-radius: 5px;
+}
+
+#dataInput {
+    display: none; /* Standardmäßig verstecken */
 }
 
 button.btn {
@@ -39,4 +44,11 @@ button.btn:hover {
     background-color: #3b2500; 
     border-color: #3b2500;
     border-radius: 6px;
+}
+
+.inputfeld {
+    border-width: 5px;
+    border-radius: 5px;
+    border: 1px solid lightgrey; 
+    box-sizing: border-box;
 }

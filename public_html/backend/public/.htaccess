@@ -1,6 +1,17 @@
 # Disable directory browsing
 Options -Indexes
 
+RewriteEngine On
+
+# Entfernt index.php aus der URL
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [L]
+
+# Wenn der Benutzer auf die Homepage zugreift (also auf /), leite direkt zum Login weiter
+RewriteRule ^$ /menu/login [L]
+
+
 # ----------------------------------------------------------------------
 # Rewrite engine
 # ----------------------------------------------------------------------

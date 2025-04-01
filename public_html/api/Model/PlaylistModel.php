@@ -16,13 +16,13 @@ class PlaylistModel extends Database{
         $allowed = [];
  
         switch($table){
-            case "playlist": $allowed = ["id", "name", "times_used", "last_use", "start", "end", "duration", "created_by"];
+            case "playlist": $allowed = ["id", "name", "times_used", "last_use", "duration", "created_by"];
                 break;
             case "playlist_contains": $allowed = ["id", "content_ID", "playlist_ID", "arrangement", "duration"];
                 break;
             case "plays_on": $allowed = ["id", "client_ID", "play_ID"];
                 break;
-            case "play_playlist": $allowed = ["id", "playlist_ID", "start"];
+            case "play_playlist": $allowed = ["id", "playlist_ID", "start", "extended"];
                 break;                    
         }
         return $allowed;
@@ -153,6 +153,21 @@ class PlaylistModel extends Database{
         return $this->update($query, $params);
     }
 
+    //sql anweisung zum aktualisieren von last Use und times Used von client
+    public function updateUsed($id, $time, $used){
+
+        $query = "UPDATE playlist SET last_use=?, times_used=? WHERE id=?";
+
+        $params = [
+            "sii", // Types: s = string, i = integer, b = bit
+            $time,
+            $used,
+            $id
+        ];
+
+        return $this->update($query, $params);
+    }
+
 // --- PLAYLIST_CONTAINS ---  
 
     public function addPlaylistContains($content_ID, $playlist_ID, $duration, $arrangement){
@@ -216,26 +231,28 @@ class PlaylistModel extends Database{
 
 // --- PLAY_PLAYLIST ---  
 
-    public function addPlayPlaylist($playlist_ID, $start){
-        $query = "INSERT INTO play_playlist (playlist_ID, start)
-                VALUES (?, ?)";
+    public function addPlayPlaylist($playlist_ID, $start, $extended){
+        $query = "INSERT INTO play_playlist (playlist_ID, start, extended)
+                VALUES (?, ?, ?)";
         $params = [
-            "is", 
+            "isi", 
             $playlist_ID,
-            $start
+            $start,
+            $extended
         ];
 
         return $this->insert($query, $params); // Returns the ID of the newly inserted client
     }
 
-    public function updatePlayPlaylist($id, $playlist_ID, $start){
+    public function updatePlayPlaylist($id, $playlist_ID, $start, $extended){
         $query = "UPDATE play_playlist 
-        SET playlist_ID=?, start=? WHERE id=?";
+        SET playlist_ID=?, start=?, extended=? WHERE id=?";
 
         $params = [
-            "isi",
+            "isii",
             $playlist_ID,
             $start,
+            $extended,
             $id
         ];
 

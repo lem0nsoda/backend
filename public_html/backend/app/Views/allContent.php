@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Content</title>
+    <title>Digital Signage - All Content</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= base_url('assets/css/allContentStyle.css') ?>">
 
@@ -24,19 +24,22 @@
         <table class="table table-striped table-bordered" id="content-table">
             <thead class="table-dark">
                 <tr>
-                    <th data-dt-column='0'>ID</th>
-                    <th data-dt-column='1'>Dateiname</th>
-                    <th data-dt-column='2'>Auflösung</th>
-                    <th data-dt-column='3'>Dauer</th>
-                    <th data-dt-column='4'>Dateityp</th>
-                    <th data-dt-column='5'>Erstellungsdatum</th>
-                    <th>Löschen</th>
+                    <th data-dt-column='0'>Vorschau</th>
+                    <th data-dt-column='1'>ID</th>
+                    <th data-dt-column='2'>Dateiname</th>
+                    <th data-dt-column='3'>Auflösung</th>
+                    <th data-dt-column='4'>Dauer [Sek.]</th>
+                    <th data-dt-column='5'>Dateityp</th>
+                    <th data-dt-column='6'>Erstellungsdatum</th>
+                    <th data-dt-column='7' >Löschen</th>
                 </tr>
             </thead>
             <tbody>
                 <!-- zeilen kommen hierhin -->
             </tbody>
         </table>
+
+        <div id="vorschau" class="hidden"></div>
     </div>
     <script src="<?= base_url('assets/js/allContentScript.js') ?>"></script>
 

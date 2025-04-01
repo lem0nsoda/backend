@@ -52,19 +52,7 @@ class Database
         }
     }
 
-/*
-    public function delete($query = "", $params = [])
-    {
-        try {
-            $stmt = $this->executeStatement($query, $params);
-            $affectedRows = $stmt->affected_rows; // Number of rows affected
-            $stmt->close();
-            return $affectedRows; // Return the number of rows deleted
-        } catch (Exception $e) {
-            throw new Exception("Error deleting data: " . $e->getMessage());
-        }
-    }
-*/
+
     public function delete($query = "", $params = [])
     {
         try {
@@ -112,12 +100,6 @@ class Database
                 throw new Exception("Fehler bei der Prepared Statement-Erstellung.");
             }
             if ($params) {
-                /*/ Extraxt datatypes of parameters
-                $types = $params[0];
-                // Remove datetypes from Array
-                array_shift($params);
-                //$stmt->bind_param($params[0], $params[1]);
-                $stmt->bind_param($types, ...$params);*/
 
                 $types = $params[0];
                 $values = array_slice($params, 1);

@@ -7,7 +7,6 @@ a.btn:hover {
     background-color:rgb(255, 255, 255);
 }
 
-
 a.btn {
     color: black !important;
     border: none !important;
@@ -17,3 +16,12 @@ a.btn:hover {
     background-color:rgb(255, 255, 255);
 }
 
+#vorschau {
+    width: 0.9;
+    height: 0.9;
+}
+
+.vorschau {
+    width: 100%;
+    height: auto;
+}

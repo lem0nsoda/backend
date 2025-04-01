@@ -17,6 +17,12 @@ class UserModel extends Database
 
     // per ... suchen
     public function getBy($where, $is){
+        $allowedWhere = ["id", "username", "password", "rights", "created_at", "times_used", "last_online"];
+
+        if (!in_array($where, $allowedWhere)) {
+            throw new Exception("Invalid parameter name.");
+        }
+
         $result =  $this->select("SELECT * FROM user WHERE $where=?", ["s", $is]);
         
         return $result ?? [];
@@ -70,6 +76,21 @@ class UserModel extends Database
             $created_at,
             $times_used,
             $last_online,
+            $id
+        ];
+
+        return $this->update($query, $params);
+    }
+
+    //sql anweisung zum aktualisieren von last Use und times Used von client
+    public function updateUsed($id, $time, $used){
+
+        $query = "UPDATE user SET last_online=?, times_used=? WHERE id=?";
+
+        $params = [
+            "sii", // Types: s = string, i = integer, b = bit
+            $time,
+            $used,
             $id
         ];
 

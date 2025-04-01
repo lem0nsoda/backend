@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= base_url('assets/css/newContentUploadStyle.css') ?>">
-    <title>Drag and Drop</title>
+    <title>Digital Signage - New Content</title>
 </head>
 <body class="bg-light text-dark">
 
@@ -21,10 +21,10 @@
     </div>
 
     <!--Dateien werden hier klein angezeigt -->
-    <div id="dataInput" class="d-flex flex-wrap gap-2 mb-3 border p-2 rounded bg-white"></div>
+    <div id="dataInput" class="hidden" class="d-flex flex-wrap gap-2 mb-3 border p-2 rounded bg-white"></div>
 
     <label for="duration">Dauer des Contents:</label><br>
-    <input type="number" id="duration" name="duration"><br><br>
+    <input type="number" class="inputfeld" id="duration" name="duration"><br><br>
 
     <button id="saveButton" class="btn btn-primary">Speichern</button>
 

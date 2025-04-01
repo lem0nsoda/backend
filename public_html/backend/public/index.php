@@ -20,6 +20,16 @@ if (version_compare(PHP_VERSION, $minPhpVersion, '<')) {
     exit(1);
 }
 
+
+
+
+
+if ($_SERVER['REQUEST_URI'] === '/') {
+    header("Location: /menu/login");
+    exit;
+}
+
+
 /*
  *---------------------------------------------------------------
  * SET THE CURRENT DIRECTORY

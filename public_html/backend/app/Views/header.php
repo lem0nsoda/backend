@@ -35,7 +35,7 @@
             </li>
 
             <li><a class="dropdown-item" href="<?= base_url('index.php/menu/devices') ?>">
-                <i class="bi bi-display" ></i> Devices
+                <i class="bi bi-display" ></i> Clients
             </a></li>
             
             <li><a class="dropdown-item" href="<?= base_url('index.php/menu/statistic') ?>"> 

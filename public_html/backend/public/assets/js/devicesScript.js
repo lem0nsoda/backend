@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
-    const req = apiurl + "/client/getBy?where=status&is=1";
+    const req = apiurl + "/client/getBy?where=client_status&is=1&limit=100";
 
     const clientsContainer = document.getElementById('clientsList');
     const SCALE_FACTOR = 0.3; // Skalierungsfaktor
@@ -18,7 +18,8 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(clientsList => {
             clientsContainer.innerHTML = '';
-            clientsList.forEach(client => {
+            clientsList.map(client => {
+                console.log(client);
                 const scaledWidth = Math.max(50, client.width * SCALE_FACTOR); // Minimiere zu kleine Rechtecke
                 const scaledHeight = Math.max(50, client.height * SCALE_FACTOR);
                 addClientToContainer(client, scaledWidth, scaledHeight);
@@ -94,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function fetchData(sortOption = 'id-asc') {
         sort = sortOption.split('-');
 
-        const req = apiurl + "/client/get?by=" + sort[0] + "&order=" + sort[1];
+        const req = apiurl + "/client/get?limit=100&by=" + sort[0] + "&order=" + sort[1];
 
         fetch(req)
             .then(response => {
@@ -109,8 +110,10 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => console.error('Error fetching data:', error));
     }
+
     function status(statusInt){
         let statusString;
+
         switch(statusInt){
             case 1: statusString = "online";
                 break;
@@ -133,7 +136,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     ${row.name}
                 </td>
                 <td>${row.width} x ${row.height}</td> 
-                <td>${status(row.status)}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary ms-2" onclick="editPos(${row.id})">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    ${row.xPosition} / ${row.yPosition}
+                </td> 
+                <td>${status(row.client_status)}</td>
                 <td>
                     <button class="btn btn-sm btn-outline-danger" onclick="deleteRow(${row.id})">
                         <i class="bi bi-trash3"></i>
@@ -165,6 +174,23 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
+    window.useClient = function(id) {
+            fetch(`${apiurl}/client/use`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id })
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Deleted data:', data);
+                    fetchData();
+                })
+                .catch(error => console.error('Error deleting data:', error));
+    };
+
     window.editName = function(id) {
         const newName = prompt('Neuer Gerätename:');
         if (newName) {
@@ -185,6 +211,28 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
+    window.editPos = function(id) {
+        const xy = prompt('Neue Kooridnaten: X/Y').split("/");
+        const x = xy[0];
+        const y = xy[1];
+    
+        if (x && y) {
+            fetch(`${apiurl}/client/update`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id, xPosition: x , yPosition: y})
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Updated name:', data);
+                    fetchData();
+                })
+                .catch(error => console.error('Error updating name:', error));
+        }
+    };
 
     fetchData();
 });

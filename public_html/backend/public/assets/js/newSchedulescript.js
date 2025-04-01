@@ -6,10 +6,11 @@ $(document).ready(function () {
     const clientsRow = document.querySelector('#clients-row');
     const dropZone = $('#drop-zone');
     const dropDetails = $('#drop-details');
-
     const saveButton = document.getElementById('save-button');
 
     const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
+
+    let isExtended = 0;
 
     function requestPlaylist(){
         const req = apiurl + "/playlist/get?table=playlist&limit=50";
@@ -53,7 +54,7 @@ $(document).ready(function () {
         clientsRow.innerHTML = clients.map(client => `
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="checkbox" value="${client.id}" id="client-${client.id}">
-                <label class="form-check-label" for="client-${client.id}">${client.id}</label>
+                <label class="form-check-label" for="client-${client.id}">${client.id} - ${client.name}</label>
             </div>
         `).join('');
     }
@@ -68,33 +69,37 @@ $(document).ready(function () {
 
     function addClients(id){
         console.log("hello");
+        console.log(id);
         const req = apiurl + "/playlist/addPlaysOn";
         let uploaded = 0;
 
+        console.log(selectedClients);
         // Erstelle ein Array von Promises für alle `fetch()`-Anfragen
         const uploadPromises = selectedClients.map(client => {
+            if(!isNaN(client) && client !== null && client !== undefined && client !== ''){
+                
+                fileData = {
+                    client_id: Number(client),
+                    play_id: id
+                };
 
-            fileData = {
-                client_id: Number(client),
-                play_id: id
-            };
-
-            // Senden der POST-Anfrage mit den Content-Daten
-            return fetch(req, {
-                method: 'POST', // HTTP-Methode
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(fileData) // Konvertiere das Datenobjekt in einen JSON-String
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Erfolgreich hinzugefügt:', data); // Erfolgsnachricht
-                uploaded++; // Zähle erfolgreiche Uploads
-            })
-            .catch(error => {
-                console.error('Fehler beim Hinzufügen des Inhalts:', error); // Fehlerbehandlung
-            });
+                // Senden der POST-Anfrage mit den Content-Daten
+                return fetch(req, {
+                    method: 'POST', // HTTP-Methode
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(fileData) // Konvertiere das Datenobjekt in einen JSON-String
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Erfolgreich hinzugefügt:', data); // Erfolgsnachricht
+                    uploaded++; // Zähle erfolgreiche Uploads
+                })
+                .catch(error => {
+                    console.error('Fehler beim Hinzufügen des Inhalts:', error); // Fehlerbehandlung
+                });
+            }
         });
 
         // Verwende `Promise.all()` um zu warten, dass alle Uploads abgeschlossen sind
@@ -118,9 +123,11 @@ $(document).ready(function () {
 
         req = apiurl + "/playlist/addPlayPlaylist";
 
+        console.log(isExtended);
         fileData = {
             playlist_id: droppedPlaylist.id,
-            start: startTime
+            start: startTime,
+            extended: isExtended
         };
 
         console.log(fileData);
@@ -145,6 +152,7 @@ $(document).ready(function () {
         });
 
     }
+
 
     // Drop-Bereich aktivieren
     dropZone.droppable({
@@ -184,7 +192,23 @@ $(document).ready(function () {
         droppedPlaylist = null;
         dropDetails.html('');
         document.getElementById('event-form').reset();
-        //alert('Ereignis erfolgreich hinzugefügt!');
+        isExtended = null;
+        alert('Schedule erfolgreich hinzugefügt!');
+    }
+
+    window.contentAnzeige = function(input){
+        console.log(input.value);
+
+        if(input.value === "true"){
+            console.log("t");
+            isExtended = 1;
+        }
+        else if(input.value === "false"){
+            console.log("f");
+            isExtended = 0;
+        }
+
+        console.log(isExtended);
     }
 
     // Event-Erstellung beim Speichern
@@ -194,20 +218,35 @@ $(document).ready(function () {
             return;
         }
 
-        const day = $('#day').val();
-        const month = $('#month').val();
-        const year = $('#year').val();
+        let day = $('#day').val();
+        let month = $('#month').val();
+        let year = new Date().getFullYear(); //aktuelles Jahr
         const startTime = $('#start-time').val();
 
         if (!day || !month || !year || !startTime) {
             alert('Bitte füllen Sie alle Datums- und Zeitfelder aus.');
             return;
         }
-        
-        const eventDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')} ${startTime}`;
-        console.log(eventDate);
 
-        console.log("playlist: " + droppedPlaylist.id);
+        // Falls das Datum in der Vergangenheit liegt, setze es auf das nächste Jahr
+        const today = new Date();
+
+        const event = new Date(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${startTime}`);
+        if (event < today) {
+            year++;
+        }
+
+        //Erstelln das Datums
+        const eventDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')} ${startTime}`;
+
+                
+        //playlist benutzen
+        fetch(`${apiurl}/playlist/use?id=${droppedPlaylist.id}`)
+        .then(response => response.json()) // Antwort als JSON parsen
+        .then(data => {})
+        .catch(error => {
+            console.error('Fehler beim Hinzufügen des Inhalts:', error); // Fehlerbehandlung
+        });
 
         $('#calendar').fullCalendar('renderEvent', {
             name: droppedPlaylist.name,
@@ -216,7 +255,6 @@ $(document).ready(function () {
         }, true);
 
         addStart(eventDate);
-
     });
 
     // Kalender initialisieren

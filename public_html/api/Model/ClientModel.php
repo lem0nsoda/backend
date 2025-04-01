@@ -17,6 +17,12 @@ class ClientModel extends Database
 
     // per ... suchen
     public function getBy($where, $is){
+        $allowedWhere = ["id", "name", "width", "height", "xPosition", "yPosition", "client_status", "times_used", "last_use", "joined_at"];
+
+        if (!in_array($where, $allowedWhere)) {
+            throw new Exception("Invalid parameter name.");
+        }
+
         $result =  $this->select("SELECT * FROM client WHERE $where=?", ["s", $is]);
         
         return $result ?? [];
@@ -26,7 +32,7 @@ class ClientModel extends Database
     public function get($by, $order, $limit, $offset){
         $order = strtoupper($order); 
         $allowedOrder = ["ASC", "DESC"];
-        $allowedBy = ["id", "name", "width", "height", "xPosition", "yPosition", "status", "times_used", "last_online", "joined_at"];
+        $allowedBy = ["id", "name", "width", "height", "xPosition", "yPosition", "client_status", "times_used", "last_use", "joined_at"];
 
 
         if (!in_array($order, $allowedOrder)) {
@@ -42,8 +48,8 @@ class ClientModel extends Database
     }
 
     //sql anweisung zum erstellen von clients
-    public function add($name, $width, $height, $xPosition, $yPosition, $status, $times_used, $last_online, $joined_at){
-        $query = "INSERT INTO client (name, width, height, xPosition, yPosition, status, times_used, last_online, joined_at)
+    public function add($name, $width, $height, $xPosition, $yPosition, $status, $times_used, $last_used, $joined_at){
+        $query = "INSERT INTO client (name, width, height, xPosition, yPosition, client_status, times_used, last_use, joined_at)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $params = [
             "siiiibiss", // Types: s = string, i = integer, b = bit
@@ -54,7 +60,7 @@ class ClientModel extends Database
             $yPosition,
             $status,
             $times_used,
-            $last_online,
+            $last_used,
             $joined_at
         ];
 
@@ -62,7 +68,7 @@ class ClientModel extends Database
     }
 
     //sql anweisung zum aktualisieren der daten von client
-    public function updateThis($id, $name, $width, $height, $xPosition, $yPosition, $status, $times_used, $last_online, $joined_at){
+    public function updateThis($id, $name, $width, $height, $xPosition, $yPosition, $status, $times_used, $last_used, $joined_at){
 
         // Ensure $times_used is an integer and $joined_at is a valid string (e.g., 'Y-m-d H:i:s')
         $times_used = (int) $times_used;
@@ -70,7 +76,7 @@ class ClientModel extends Database
 
 
         $query = "UPDATE client 
-        SET name=?, width=?, height=?, xPosition=?, yPosition=?, status=?, times_used=?, last_online=?, joined_at=? 
+        SET name=?, width=?, height=?, xPosition=?, yPosition=?, client_status=?, times_used=?, last_use=?, joined_at=? 
         WHERE id=?";
 
         $params = [
@@ -82,8 +88,37 @@ class ClientModel extends Database
             $yPosition,
             $status,
             $times_used,
-            $last_online,
+            $last_used,
             $joined_at,
+            $id
+        ];
+
+        return $this->update($query, $params);
+    }
+
+    //sql anweisung zum aktualisieren des status von client
+    public function updateStatus($id, $status){
+
+        $query = "UPDATE client SET client_status=? WHERE id=?";
+
+        $params = [
+            "ii", // Types: s = string, i = integer, b = bit
+            $status,
+            $id
+        ];
+
+        return $this->update($query, $params);
+    }
+
+    //sql anweisung zum aktualisieren von last Use und times Used von client
+    public function updateUsed($id, $time, $used){
+
+        $query = "UPDATE client SET last_use=?, times_used=? WHERE id=?";
+
+        $params = [
+            "sii", // Types: s = string, i = integer, b = bit
+            $time,
+            $used,
             $id
         ];
 

@@ -409,6 +409,69 @@ class PlaylistController extends BaseController
 
     }
 
+    public function useAction(){
+        $strErrorDesc = '';
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+        $arrParams = [];
+
+        if (strtoupper($requestMethod) == 'GET' ) 
+            $arrParams = $this->getQueryStringParams();
+        else if(strtoupper($requestMethod) == 'POST')
+            $arrParams = $this->getPostParams();
+        
+        
+        if (strtoupper($requestMethod) == 'GET' || strtoupper($requestMethod) == 'POST') {
+            try {
+                if (isset($arrParams['id']) && $arrParams['id']) {
+                    $id = $arrParams['id'];
+                    
+                    $time = date("Y-m-d H:i:s");
+                    $old = json_decode($this->getFromTableByID("playlist", $id));
+                    if(isset($old[0]->times_used)){
+                        $used = $old[0]->times_used;
+                        $used++;
+                    }
+                    else
+                        $used = 0;
+
+                    $playlistModel = new PlaylistModel();
+                    //update client with userModel
+                    $result = $playlistModel->updateUsed($id, $time, $used);
+                
+                    //success message
+                    if ($result > 0) {
+                        $responseData = json_encode(['success' => true, 'message' => 'Client with id '. $id .' updated successfully']);
+                    } else {
+                        $responseData = json_encode(['success' => false, 'message' => 'No rows affected or Client with id '. $id .' not found.']);
+                    }
+                    
+                }
+                else{
+                    $responseData = json_encode(['success' => false, 'message' => 'No ID']);
+                }
+            } catch (Error $e) {
+                $strErrorDesc = $e->getMessage().'Something went wrong! Please contact support.';
+                $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
+            }
+        } else {
+            $strErrorDesc = 'Method not supported';
+            $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
+        }
+     
+        // send output 
+        if (!$strErrorDesc) {
+            $this->sendOutput(
+                $responseData,
+                array('Content-Type: application/json', 'HTTP/1.1 200 OK')
+            );
+        } else {
+            $this->sendOutput(
+                json_encode(array('error' => $strErrorDesc)), 
+                array('Content-Type: application/json', $strErrorHeader)
+            );
+        }  
+    }
+
 // --- PLAYLIST_CONTAINS ---
     public function addPlaylistContainsAction(){
         $strErrorDesc = '';
@@ -635,9 +698,10 @@ class PlaylistController extends BaseController
                 // Extract input fields
                 $playlist_id = $arrParams['playlist_id'] ?? null;
                 $start = $arrParams['start'] ?? null;
+                $extended = $arrParams['extended'] ?? null;
 
                 $playlistModel = new PlaylistModel();
-                $newPlayPlaylistId = $playlistModel->addPlayPlaylist($playlist_id, $start);
+                $newPlayPlaylistId = $playlistModel->addPlayPlaylist($playlist_id, $start, $extended);
                 
                 $responseData = $this->getFromTableByID("play_playlist", $newPlayPlaylistId);
 
@@ -689,9 +753,13 @@ class PlaylistController extends BaseController
                         $start = (is_array($arrParams) && isset($arrParams['start']) && $arrParams['start']) ? $arrParams['start'] 
                         : ((is_array($dataToUpdate) && isset($dataToUpdate[0]->start)) ? $dataToUpdate[0]->start 
                         : null);
+                        
+                        $extended = (is_array($arrParams) && isset($arrParams['extended']) && $arrParams['extended']) ? $arrParams['extended'] 
+                        : ((is_array($dataToUpdate) && isset($dataToUpdate[0]->extended)) ? $dataToUpdate[0]->extended 
+                        : null);
 
                         $playlistModel = new PlaylistModel();
-                        $result = $playlistModel->updatePlayPlaylist($id, $playlist_id, $start);
+                        $result = $playlistModel->updatePlayPlaylist($id, $playlist_id, $start, $extended);
                     
                         //success message
                         if ($result > 0) {

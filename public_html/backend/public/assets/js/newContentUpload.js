@@ -5,7 +5,11 @@ const fileListContainer = document.getElementById('fileList');
 const saveButton = document.getElementById('saveButton');
 const durationIn = document.getElementById('duration');
 
+const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
+
 let filesData = [];
+
+let userID = 1;
 
 //bilder im dropfeld 'aufnehmen' (auserhalb nicht)
 dropArea.addEventListener('dragover', (event) => {
@@ -19,7 +23,7 @@ dropArea.addEventListener('drop', (event) => {
     // Liste, wo die Daten der Bilder hineinkommen
     const files = event.dataTransfer.files;
 
-    // Iteriere durch alle Dateien
+    // durch alle Dateien durchgehen
     for (let i = 0; i < files.length; i++) {
         const file = files[i];
 
@@ -28,9 +32,16 @@ dropArea.addEventListener('drop', (event) => {
             const fileData = {
                 name: file.name,
                 type: file.type,
-                added_by: 1,
+                added_by: userID,
                 preview: URL.createObjectURL(file)
             };
+
+            fetch(`${apiurl}/user/use?id=${userID}`)
+            .then(response => response.json()) // Antwort als JSON parsen
+            .then(data => {})
+            .catch(error => {
+                console.error('Fehler beim Hinzufügen des Inhalts:', error); // Fehlerbehandlung
+            });
 
             // Datei in Base64 umwandeln
             const reader = new FileReader();
@@ -71,19 +82,26 @@ dropArea.addEventListener('drop', (event) => {
 
 
 //um bilder klein anzuzeigen
-function displayFilePreview(fileData) {
-    if (fileData.type.startsWith('image/')) {
+function displayFilePreview(file) {
+
+    dataInput.classList.remove("hidden");
+    dataInput.classList.add("shown");
+
+    
+    if (file.type.startsWith('image/')) {
         const imgPreview = document.createElement('img');
-        imgPreview.src = fileData.preview;
-        imgPreview.alt = fileData.name;
+        imgPreview.src = file.preview;
+        imgPreview.alt = file.name;
         dataInput.appendChild(imgPreview);
     }
-      else if (fileData.type.startsWith('video/')) {
+      else if (file.type.startsWith('video/')) {
         const videoPreview = document.createElement('video');
-        videoPreview.src = fileData.preview;
+        videoPreview.src = file.preview;
         videoPreview.controls = true;
         dataInput.appendChild(videoPreview);
     }
+
+    dataInput.style.display = "flex"; 
 }
 
 //Dateigröße formatieren
@@ -158,5 +176,4 @@ function saveData() {
 }
 
 saveButton.addEventListener('click', saveData);
-
 

@@ -38,7 +38,72 @@ p{
 
 #save-playlist{
     margin-bottom: 5px;
-    margin-right: 105px;
+    margin-right: 115px;
+    background-color: #633D00 !important;
+    border-color: #633D00 !important;
+    border-radius: 6px;
+    color: white;
+}
+
+#save-playlist:hover {
+    background-color: #3b2500 !important; 
+    border-color: #3b2500 !important;
+    border-radius: 6px;
+    color: white !important;
+}
+
+.preview-cell {
+    text-align: center;
+}
+
+.preview-img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.preview-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.preview-thumbnail img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.preview-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.file-name {
+    font-weight: bold;
+}
+
+.file-type {
+    color: gray;
+    font-size: 12px;
+}
+
+/* Duration-Buttons*/
+.plus, .minus {
+    border: 1px solid #000000 !important; 
+    border-radius: 5px;
+    background-color: transparent !important; 
+    color: black !important; 
+}
+
+.plus:hover, .minus:hover {
+    background-color: #ddd !important; 
 }
 
 

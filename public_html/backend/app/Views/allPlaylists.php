@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Playlists</title>
+    <title>Digital Signage - All Playlists</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= base_url('assets/css/allPlaylistStyle.css') ?>">
 
@@ -26,7 +26,7 @@
                 <tr>
                     <th data-dt-column='0'>Playlist-ID</th>
                     <th data-dt-column='1'>Playlistname</th>
-                    <th data-dt-column='2'>Dauer</th>
+                    <th data-dt-column='2'>Dauer [Sek.]</th>
                     <th data-dt-column='3'>zuletzt benutzt</th>
                     <th data-dt-column='4'>Erstellungsdatum</th>
                     <th data-dt-column='5'>erstellt von</th>

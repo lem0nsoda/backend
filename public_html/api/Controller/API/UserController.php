@@ -79,7 +79,6 @@ class UserController extends BaseController
         }
     } 
 
-
     public function getByAction(){
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
@@ -272,6 +271,70 @@ class UserController extends BaseController
                             $responseData = json_encode(['success' => false, 'message' => 'No rows affected or User with id '. $id .' not found.']);
                         }
                     }
+                }
+                else{
+                    $responseData = json_encode(['success' => false, 'message' => 'No ID']);
+                }
+            } catch (Error $e) {
+                $strErrorDesc = $e->getMessage().'Something went wrong! Please contact support.';
+                $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
+            }
+        } else {
+            $strErrorDesc = 'Method not supported';
+            $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
+        }
+     
+        // send output 
+        if (!$strErrorDesc) {
+            $this->sendOutput(
+                $responseData,
+                array('Content-Type: application/json', 'HTTP/1.1 200 OK')
+            );
+        } else {
+            $this->sendOutput(
+                json_encode(array('error' => $strErrorDesc)), 
+                array('Content-Type: application/json', $strErrorHeader)
+            );
+        }  
+    }
+
+    public function useAction(){
+        $strErrorDesc = '';
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+        $arrParams = [];
+
+        if (strtoupper($requestMethod) == 'GET' ) 
+            $arrParams = $this->getQueryStringParams();
+        else if(strtoupper($requestMethod) == 'POST')
+            $arrParams = $this->getPostParams();
+        
+        
+        if (strtoupper($requestMethod) == 'GET' || strtoupper($requestMethod) == 'POST') {
+            try {
+                if (isset($arrParams['id']) && $arrParams['id']) {
+                    $id = $arrParams['id'];
+                    
+                        $time = date("Y-m-d H:i:s");
+                        $old = json_decode($this->getByID($id));
+
+                        if(isset($old[0]->times_used)){
+                            $used = $old[0]->times_used;
+                            $used++;
+                        }
+                        else
+                            $used = 0;
+
+                        $userModel = new UserModel();
+                        //update client with userModel
+                        $result = $userModel->updateUsed($id, $time, $used);
+                    
+                        //success message
+                        if ($result > 0) {
+                            $responseData = json_encode(['success' => true, 'message' => 'Client with id '. $id .' updated successfully']);
+                        } else {
+                            $responseData = json_encode(['success' => false, 'message' => 'No rows affected or Client with id '. $id .' not found.']);
+                        }
+                    
                 }
                 else{
                     $responseData = json_encode(['success' => false, 'message' => 'No ID']);
