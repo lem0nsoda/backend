@@ -6,6 +6,7 @@
     margin-bottom: 20px;
 }
 
+/*div (.button-container) indem alle buttons sind stylen */
 .button-container .btn {
     background-color: #633D00;
     color: white;

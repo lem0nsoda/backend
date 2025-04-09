@@ -29,12 +29,14 @@ class LoginController extends BaseController
             
             <form method="POST" action="">
             <h1>Login</h1>
+                <!--inputfelder für name und passwort-->
                 <label for="benutzername">Benutzername:</label>
                 <input type="text" id="benutzername" name="benutzername" required>
                 <br>
                 <label for="passwort">Passwort:</label>
                 <input type="password" id="passwort" name="passwort" required>
                 <br>
+                <!--login button-->
                 <input type="submit" value="Login">
             </form>
 

@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.querySelector('#content-table tbody');
     const sortOptions = document.querySelector('#sort-options');
 
+    //holen der benutzerdaten
     function fetchData(sortOption = '') { 
         const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
 
@@ -20,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(error => console.error('Error fetching data:', error));
     }
 
+    //erstellung der tabelle aller benutzer*innen
     function populateTable(rows) {
         tableBody.innerHTML = rows.map(row => `
             <tr>
@@ -34,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `).join('');
     }
 
+    //zum sortieren
     sortOptions.addEventListener('change', () => fetchData(sortOptions.value));
 
     fetchData();

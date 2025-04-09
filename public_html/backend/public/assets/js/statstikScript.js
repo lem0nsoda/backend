@@ -3,20 +3,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
     let chart;
 
-    //update the chart
+    // erstellt/ aktualisiert das balkendiagramm mit neuen daten
     function updateChart(usernames, usageCounts, headingText, xAxisLabel, yAxisLabel) {
         document.getElementById('heading').textContent = headingText;
 
+        //löscht das vorherige diagramm, falls vorhanden
         if (chart) {
             chart.destroy(); 
         }
 
+        // initialisiert das diagramm mit den übergebenen werten
         chart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: usernames,
                 datasets: [{
-                    label: 'Häufigkeit',
+                    label: 'häufigkeit',
                     data: usageCounts,
                     backgroundColor: 'rgba(75, 192, 192, 0.5)',
                     borderColor: 'rgba(75, 192, 192, 1)',
@@ -44,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    //button aufruf funktionen
+    //häufigkeit von content-uploads je Benutzer
     window.handleContentUpload = function () {
         let req = apiurl + "/content/get?by=added_by&limit=100";
 
@@ -58,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     var countUser = new Map();
                     var count = [];
 
+                    // zählt uploads pro user
                     data.map(content => {
                         if(!userID.includes(content.added_by)){
                             userID.push(content.added_by);
@@ -69,17 +72,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
 
+                    //map in array
                     for(let i = 0; i < userID.length; i++){
                         count[i] = countUser.get(userID[i]);
                     }
 
-                    updateChart(userID, count, "Statistik", "Benutzer", "Anzahl der Uploads");
-          
+                    updateChart(userID, count, "statistik", "benutzer", "anzahl der uploads");
                 }
             })
-            .catch(error => console.error('Error fetching content data:', error));
+            .catch(error => console.error('error fetching content data:', error));
     };
 
+    //wie viele playlists von welchen benutzern erstellt wurden
     window.handlePlaylistCreation = function () {
         fetch(`${apiurl}/playlist/get?table=playlist&by=created_by&limit=100`)
             .then(response => response.json())
@@ -90,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     var countUser = new Map();
                     var count = [];
 
+                    // zählt playlists pro user
                     data.map(playlist => {
                         if(!userID.includes(playlist.created_by)){
                             userID.push(playlist.created_by);
@@ -101,17 +106,20 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
 
+                    // wandelt map in array um
                     for(let i = 0; i < userID.length; i++){
                         count[i] = countUser.get(userID[i]);
                     }
 
                 }
 
-                updateChart(userID, count, "Statistik", "Benutzer-ID", "Anzahl der erstellten Playlists");
+                // zeigt das diagramm
+                updateChart(userID, count, "statistik", "benutzer-id", "anzahl der erstellten playlists");
             })
-            .catch(error => console.error('Error fetching playlist data:', error));
+            .catch(error => console.error('error fetching playlist data:', error));
     };
 
+    //Anzahl der verwendungen von contents
     window.handleContentUsage = function () {
         fetch(`${apiurl}/content/getInfo?by=added_by&limit=100`)
             .then(response => response.json())
@@ -122,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     var countContent = new Map();
                     var count = [];
 
+                    // speichert verwendungsanzahl pro content-ID
                     data.map(content => {
                         if(!contentID.includes(content.id)){
                             contentID.push(content.id);
@@ -136,12 +145,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         count[i] = countContent.get(contentID[i]);
                     }
 
-                    updateChart(contentID, count, "Statistik", "Content-ID", "Anzahl der Benutzungen");
+                    updateChart(contentID, count, "statistik", "content-id", "anzahl der benutzungen");
                 }
             })
-            .catch(error => console.error('Error fetching content data:', error));
+            .catch(error => console.error('error fetching content data:', error));
     };
 
+    //die anzahl der verwendungen von playlists
     window.handlePlaylistUsage = function () {
         fetch(`${apiurl}/playlist/get?table=playlist&limit=100`)
             .then(response => response.json())
@@ -152,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     var countPlaylist = new Map();
                     var count = [];
 
+                    // speichert verwendungsanzahl pro playlist-id
                     data.map(playlist => {
                         if(!playlistID.includes(playlist.id)){
                             playlistID.push(playlist.id);
@@ -165,25 +176,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     for(let i = 0; i < playlistID.length; i++){
                         count[i] = countPlaylist.get(playlistID[i]);
                     }
-
-                    updateChart(playlistID, count, "Statistik", "Playlist-ID", "Anzahl der Benutzungen");
+                    updateChart(playlistID, count, "statistik", "playlist-id", "anzahl der benutzungen");
                 }
             })
-            .catch(error => console.error('Error fetching content data:', error));
+            .catch(error => console.error('error fetching content data:', error));
     };
-
 });
 
-document.addEventListener('DOMContentLoaded', () => {
+//bei klick auf einen buttn wird dieser als "active" markiert 
+document.addEventListener('DMContentLoaded', () => {
     const buttons = document.querySelectorAll('.button-container .btn');
 
     buttons.forEach(button => {
         button.addEventListener('click', function() {
-            // Entferne die "active"-Klasse von allen Buttons
+            // entfernt die "active"-klasse von allen buttons
             buttons.forEach(btn => btn.classList.remove('active'));
-            // Füge die "active"-Klasse zum geklickten Button hinzu
+            //"active"-klasse auf gewählten button
             this.classList.add('active');
         });
     });
 });
-

@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
 
     function saveUser() {
+        //eingaben aus inputfledern in html
         const username = document.querySelector('#username').value;
         const password = document.querySelector('#password').value;
         const rights = document.querySelector('#rights').value === 'true';
@@ -51,5 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
     }
 
+    //speicherbutton event ruft obrige funktion auf
     saveButton.addEventListener('click', saveUser);
 });

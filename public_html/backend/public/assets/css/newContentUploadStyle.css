@@ -7,11 +7,7 @@
     border-color: lightgrey !important;
 }
 
-input {
-    border-color: lightgrey !important;
-    border-radius: 5px;
-}
-
+/*dropfeld*/
 #dropArea {
     height: 200px;
     font-size: 18px;
@@ -34,6 +30,7 @@ input {
     display: none; /* Standardmäßig verstecken */
 }
 
+/* speicherbutton*/
 button.btn {
     background-color: #633D00;
     border-color: #633D00;
@@ -46,6 +43,7 @@ button.btn:hover {
     border-radius: 6px;
 }
 
+/* inputfeld dür dauer*/
 .inputfeld {
     border-width: 5px;
     border-radius: 5px;

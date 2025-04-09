@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const addUserButton = document.querySelector('#add-users-button');
     const allUserButton = document.querySelector('#all-users-button');
 
+    //daten des angemeldeten benutzers holen
     function fetchOwnData() {
         const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
         const req = apiurl + "/user/getBy?where=id&is=" + 1;
@@ -26,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(error => console.error('Error fetching own data:', error));
     }
 
+    //tabelle aus den eigenen datenerstellen
     function populateOwnDataTable(user) {
         ownDataTableBody.innerHTML = `
             <tr>
@@ -63,9 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Event Listener
+    //buttons die in html zu seiten weiterleiten (neuen benutzer hinzufügen und alle benutzer tabelle)
     addUserButton.addEventListener('click', addUser);
     allUserButton.addEventListener('click', allUser);    
-
-    // Fetch own data on load
+    
     fetchOwnData();
 });

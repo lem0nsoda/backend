@@ -2,16 +2,13 @@ body {
     font-family: Arial, sans-serif;
 }
 
+/*unterüberschriften*/
 h3 {
     color: #003563; 
     font-size: 150% !important;
 }
 
-.table-dark {
-    background-color: #003563;
-    color: #FFFFFF;
-}
-
+/*nromaler fließtext*/
 p{
     color: black;
     font-size: 110% !important;
@@ -22,23 +19,14 @@ p{
     margin-bottom: 0px;
 }
 
-.btn-primary {
-    background-color: #003563;
-    border-color: #003563;
-}
-
-.btn-primary:hover {
-    background-color: #011428; /* Dunklere Schattierung */
-    border-color: #011428;
-}
-
+/*dropfeld*/
 #drop-zone {
     border: 2px dashed #003563;
     background-color: #E8F4FF; 
     text-align: center;
     color: #003563;
 }
-
+/* fullcalender styling*/
 #calendar {
     margin-top: 20px;
     background-color: #FFFFFF;
@@ -48,16 +36,7 @@ p{
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-input.form-control {
-    border: 1px solid #003563;
-    border-radius: 5px;
-}
-
-#save-button {
-    padding: 10px 20px;
-    font-size: 18px;
-}
-
+/* inputfelder zur startzeitpunkteingabe*/
 #day, #month, #start-time{
     width: 95px;
     margin-right: 5px;
@@ -65,31 +44,7 @@ input.form-control {
     margin-bottom: 20px;
 }
 
-button.btn {
-    background-color: #633D00;
-    border-color: #633D00;
-    border-radius: 6px;
-}
-
-a.btn:hover {
-    background-color: #3b2500 !important; 
-    border-color: #3b2500 !important;
-    border-radius: 6px;
-}
-
-
-a.btn {
-    background-color: #633D00 !important;
-    border-color: #633D00 !important;
-    border-radius: 6px;
-}
-
-a.btn:hover {
-    background-color: #3b2500 !important; 
-    border-color: #3b2500 !important;
-    border-radius: 6px;
-}
-
+/* speicherbutton*/
 #save-button{
     margin-bottom: 5px;
     margin-right: 115px;
@@ -106,6 +61,7 @@ a.btn:hover {
     color: white !important;
 }
 
+/*inputfeld für wie oft playlist durchlaufen */
 #howoften{
     width: 85px;
     margin-left: 0px;
@@ -119,11 +75,13 @@ a.btn:hover {
     gap: 10px;
 }
 
+/*gesamtdaueranzeige */
 #gesdauer{
     margin-left: -10px;
     margin-bottom: 0px;
 }
 
+/*enddatumanzeige */
 #enddatum{
     margin-left: -15px;
     margin-right: 0px;

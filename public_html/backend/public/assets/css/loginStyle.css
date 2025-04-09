@@ -1,4 +1,4 @@
-
+/*allgemein body */
 body {
     background-color: #f8f9fa;
     display: flex;
@@ -18,27 +18,7 @@ form {
     max-width: 400px;
 }
 
-#b {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #003563;
-    color: white;
-    border-radius: 6px;
-    width: 120px;
-    height: 40px;
-    font-size: 16px;
-    border: none;
-    background-color: #003563;
-    color: white;
-    border: none;
-}
-
-#b:hover {
-background-color: #002a4b;
-}
-
-
+/*überschrift*/
 h1 {
     color: #003563;
     text-align: center;
@@ -84,7 +64,7 @@ input[type="submit"]:hover {
     margin-top: 10px;
 }
 
-/* Styling für den "Benutzeroberfläche"-Button */
+/* Styling für den backend-Button */
 #userInterfaceButton {
     position: fixed;
     bottom: 20px;

@@ -4,24 +4,28 @@ namespace App\Controllers;
 
 class Menu extends BaseController
 {
+    // zeigt die ansicht zum hochladen von neuem content
     public function newContentUpload()
     {
-        $data['title'] = 'New Upload';
+        $data['title'] = 'new upload';
         return view('newContentUpload', $data);
     }
 
+    // zeigt eine tabelle aller contents
     public function allContent()
     {
-        $data['title'] = 'All Content';
+        $data['title'] = 'all content';
         return view('allContent', $data);
     }
 
+    // zeigt eine tabelle aller playlists
     public function allPlaylists()
     {
-        $data['title'] = 'allPlaylists';
+        $data['title'] = 'allplaylists';
         return view('allPlaylists', $data);
     }
 
+    // zeigt eine tabelle aller schedules
     public function allSchedules()
     {
         $data['title'] = 'allSchedules';
