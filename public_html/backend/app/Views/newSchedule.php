@@ -58,35 +58,37 @@
                             <p>Ziehen Sie eine Playlist hierher.</p>
                             <div id="drop-details"></div>
                         </div>
+                        <!-- Speicher-Button -->
+                        <button id="save-button" class="btn btn-primary mt-3">Speichern</button>
+
                     </div>
 
                     <!-- Eingabefelder für Datum und Uhrzeit -->
                     <div class="col-md-6">
-                        <h3>Wie oft soll die Playlist durchlaufen?</h3>
-                        <div class="col">
-                            <input type="number" id="howoften" class="form-control" value="1" placeholder="Ganzzahl eingeben" min="1">
-                        </div>
-                        <br>
-
                         <h3>Startdatum und -uhrzeit</h3>
-                        <form id="event-form">
-                            <div class="row mb-2">
-                                <div class="col">
-                                    <input type="number" id="day" class="form-control" placeholder="Tag" min="1" max="31">
+                            <form id="event-form">
+                                <div class="row mb-2">
+                                    <div class="col">
+                                        <input type="number" id="day" class="form-control" placeholder="Tag" min="1" max="31">
+                                    </div>
+                                    <div class="col">
+                                        <input type="number" id="month" class="form-control" placeholder="Monat" min="1" max="12">
+                                    </div>
+                                    <div class="col">
+                                        <input type="time" id="start-time" class="form-control">
+                                    </div>
                                 </div>
-                                <div class="col">
-                                    <input type="number" id="month" class="form-control" placeholder="Monat" min="1" max="12">
-                                </div>
-                                <div class="col">
-                                    <input type="time" id="start-time" class="form-control">
-                                </div>
-                            </div>
-                        </form>
+                            </form>
+
+                        <h3>Wie oft soll die Playlist durchlaufen?</h3>
+                        <div id="howoftenstyle">
+                            <input type="number" id="howoften" class="form-control" value="1" placeholder="Ganzzahl eingeben" min="1">
+                            <p id="gesdauer">Gesamtdauer: 0s<p>
+                        </div>
+                        <p id ="enddatum">Enddatum: <p>
+                        
                     </div>
                 </div>
-
-                <!-- Speicher-Button -->
-                <button id="save-button" class="btn btn-primary mt-3">Speichern</button>
 
                 <div id="calendar"></div>
             </div>

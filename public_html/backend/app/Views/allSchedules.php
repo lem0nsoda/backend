@@ -20,7 +20,7 @@
 <body>
     <div class="container my-5">
         <h1 class="mb-4">All Schedules</h1>
-        
+        <!--tabelle aller zeitpläne-->
         <table class="table table-striped table-bordered" id="content-table">
             <thead class="table-dark">
                 <tr>

@@ -7,6 +7,11 @@ $(document).ready(function () {
     const dropZone = $('#drop-zone');
     const dropDetails = $('#drop-details');
     const saveButton = document.getElementById('save-button');
+    const gesdauer = document.getElementById('gesdauer');
+    const inputhowoften = document.getElementById('howoften');
+    const ausgabeenddatum = document.getElementById('enddatum');
+
+    let eventDate = null;
 
     const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
 
@@ -68,8 +73,6 @@ $(document).ready(function () {
     }
 
     function addClients(id){
-        console.log("hello");
-        console.log(id);
         const req = apiurl + "/playlist/addPlaysOn";
         let uploaded = 0;
 
@@ -115,7 +118,8 @@ $(document).ready(function () {
             });
     }
 
-    function addStart(startTime){
+    //startzeitpunkt hinzufügen (API)
+    function addStart(startTime, often){
         if (!selectedClients) {
             alert('Bitte Client(s) auswählen.');
             return;
@@ -123,14 +127,13 @@ $(document).ready(function () {
 
         req = apiurl + "/playlist/addPlayPlaylist";
 
-        console.log(isExtended);
         fileData = {
             playlist_id: droppedPlaylist.id,
             start: startTime,
-            extended: isExtended
+            extended: isExtended,
+            how_often: often
         };
 
-        console.log(fileData);
 
         fetch(req, {
             method: 'POST', // HTTP-Methode
@@ -152,7 +155,6 @@ $(document).ready(function () {
         });
 
     }
-
 
     // Drop-Bereich aktivieren
     dropZone.droppable({
@@ -185,6 +187,34 @@ $(document).ready(function () {
         selectedClients = clients;
     }
 
+    //gesamtdauer anzeigen
+    function gesDauer(often) {
+        let total = droppedPlaylist.duration;
+        
+        total *= often;
+
+        gesdauer.textContent = `Gesamtdauer: ${total}s`;
+    }
+
+    function ausgabe_enddatum(often) {
+        let total = droppedPlaylist.duration;
+        
+        total *= often;
+
+        //eventDate (String) umwandeln in datum
+        if (typeof eventDate === "string") {
+            datum = new Date(eventDate);
+        }
+
+        datum.setSeconds(datum.getSeconds() + total);
+
+        // Enddatum als formatierten String erstellen
+        const enddate = `${datum.getFullYear()}-${(datum.getMonth() + 1).toString().padStart(2, '0')}-${datum.getDate().toString().padStart(2, '0')} ${datum.toTimeString().slice(0, 8)}`;
+
+        ausgabeenddatum.textContent = `Enddatum: ${enddate}`;
+    }
+
+
     function reset(){
 
         // Reset des Drop-Bereichs
@@ -197,31 +227,28 @@ $(document).ready(function () {
     }
 
     window.contentAnzeige = function(input){
-        console.log(input.value);
-
         if(input.value === "true"){
-            console.log("t");
+            //console.log("t");
             isExtended = 1;
         }
         else if(input.value === "false"){
-            console.log("f");
+            //console.log("f");
             isExtended = 0;
         }
-
-        console.log(isExtended);
     }
 
-    // Event-Erstellung beim Speichern
-    saveButton.addEventListener('click', () => {
-        if (!droppedPlaylist) {
-            alert('Bitte ziehen Sie zuerst eine Playlist in den Drop-Bereich.');
-            return;
+    inputhowoften.addEventListener('change', () => {
+        if (droppedPlaylist) {
+            gesDauer(inputhowoften.value);
         }
+    });
 
+    inputhowoften.addEventListener('change', () => {
         let day = $('#day').val();
         let month = $('#month').val();
         let year = new Date().getFullYear(); //aktuelles Jahr
-        const startTime = $('#start-time').val();
+        let startTime = $('#start-time').val();
+        let often = $('#howoften').val();
 
         if (!day || !month || !year || !startTime) {
             alert('Bitte füllen Sie alle Datums- und Zeitfelder aus.');
@@ -229,17 +256,27 @@ $(document).ready(function () {
         }
 
         // Falls das Datum in der Vergangenheit liegt, setze es auf das nächste Jahr
-        const today = new Date();
+        let today = new Date();
 
-        const event = new Date(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${startTime}`);
+        let event = new Date(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${startTime}`);
         if (event < today) {
             year++;
         }
 
         //Erstelln das Datums
-        const eventDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')} ${startTime}`;
+        eventDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')} ${startTime}`;
 
-                
+        ausgabe_enddatum(often);
+        
+    });
+
+    // Event-Erstellung beim Speichern
+    saveButton.addEventListener('click', () => {
+        if (!droppedPlaylist) {
+            alert('Bitte ziehen Sie eine Playlist in den Drop-Bereich.');
+            return;
+        }
+
         //playlist benutzen
         fetch(`${apiurl}/playlist/use?id=${droppedPlaylist.id}`)
         .then(response => response.json()) // Antwort als JSON parsen
@@ -254,7 +291,9 @@ $(document).ready(function () {
             description: `Clients: ${selectedClients.join(', ')}`
         }, true);
 
-        addStart(eventDate);
+        let often = $('#howoften').val();
+
+        addStart(eventDate, often);
     });
 
     // Kalender initialisieren

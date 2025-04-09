@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(error => console.error('Error fetching data:', error));
     }
     
+    // laden der daten auf welchen clients die playlist angezeigt werden soll
     function fetchClientsData(play_playlist){
         var fetched = 0;
 
@@ -82,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
          });
     }
 
+    //laden der Daten der Playlist
     function fetchPlaylistData(play_playlist){
         var fetched = 0;
 
@@ -117,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
          });
     }
 
+    //allSchedule-Tabelle befüllen (mit zuvor geholten daten)
     function populateTable(playlist, play_playlist) {
         let clientInfo = JSON.parse(playClients.get(play_playlist.id));
         console.log(clientInfo);
@@ -156,6 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
+    //zeile der Tabelle löschen
     window.deleteRow = function(id) {
         if (confirm('Möchten Sie diesen Eintrag wirklich löschen?')) {
             fetch(`${apiurl}/playlist/delete`, {
@@ -175,6 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    //Startzeitpunkt des Schedules bearbeiten
     window.editStart = function(id) {
         const newStart = prompt('Neuer Startzeitpunkt:');
         if (newStart) {
@@ -195,5 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    //startet bei laden der seite
     fetchPlayData(); 
 });

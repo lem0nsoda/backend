@@ -19,6 +19,7 @@
                 <label for="sort-options" class="form-label mb-0">Nach</label>
             </div>
             <div class="col-auto">
+                <!--zur sortierung-->
                 <select id="sort-options" class="form-select">
                     <option value="dateiname-asc">Dateiname (A-Z)</option>
                     <option value="dateiname-desc">Dateiname (Z-A)</option>
@@ -33,6 +34,7 @@
         </div>
         <table class="table table-striped table-bordered" id="content-table">
             <thead class="table-dark">
+                <!--tabelle-->
                 <tr>
                     <th>ID</th>
                     <th>Username</th>

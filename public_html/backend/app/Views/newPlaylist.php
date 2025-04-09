@@ -21,7 +21,7 @@
 </head>
 <body>
     <div class="grid-container">
-        <!-- Linke Seite -->
+        <!-- Linke Seite: tabelle mit contents -->
         <div class="left">
             <h1>Playlist erstellen</h1>
             <table class="table table-striped" id="content-table">
@@ -37,7 +37,7 @@
             </table>
         </div>
 
-        <!-- Rechte Seite -->
+        <!-- Rechte Seite: drop-feld-->
         <div id="preview-area" class="preview-area">
             <p>Content von der Tabelle hierher ziehen</p>
         </div>

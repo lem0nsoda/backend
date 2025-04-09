@@ -15,7 +15,7 @@
 
 <div class="container my-5">
     <h1>Drag and Drop</h1>
-
+    <!--dropfeld-->
     <div id="dropArea" class="border border-primary rounded-3 bg-info p-4 text-center mb-4">
         Ziehe eine Bild- oder Videodatei hierher
     </div>

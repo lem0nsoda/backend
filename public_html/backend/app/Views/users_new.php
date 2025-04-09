@@ -14,6 +14,7 @@
 <body>
     <h1>Benutzer hinzufügen</h1>
     <div class="container my-5">
+        <!--inputfelder für name, passwort und rechte des users-->
         <form id="add-user-form">
             <div class="mb-3">
                 <label for="username" class="form-label">Benutzername</label>
@@ -31,6 +32,7 @@
                 </select>
             </div>
             <button type="button" class="btn btn-primary" id="save-button">Speichern</button>
+            <!--zurück zu vorheriger seite-->
             <a id="back" href="<?=site_url('menu/users')?>" class="btn btn-primary">zurück</a>
         </form>
     </div>

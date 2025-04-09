@@ -15,7 +15,7 @@
 </head>
 <body>
     <h1 id="heading">Statistik</h1>
-
+    <!--buttons zur auswahl der statistik-->
     <div class="button-container">
         <button class="btn btn-primary" onclick="handleContentUpload()">Contentupload von Benutzern</button>
         <button class="btn btn-primary" onclick="handlePlaylistCreation()">Playlisterstellung von Benutzern</button>

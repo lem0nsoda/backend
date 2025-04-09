@@ -21,7 +21,7 @@
         </table>
     </div>
 
-    <!-- Buttons -->
+    <!--Buttons -->
     <div id="buttons-container" class="my-3">
         <a id="all-users-button" onclick="allUser()" href="/backend/public/index.php/menu/users_table" class="btn btn-primary d-none">Alle Benutzer</a>
         <a id="add-users-button" onclick="addUser()" href="/backend/public/index.php/menu/users_new" class="btn">Neuen Benutzer anlegen</a>

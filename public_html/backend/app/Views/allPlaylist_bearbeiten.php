@@ -20,6 +20,7 @@
 <body>
     <h1 class="mb-4">Playlist bearbeiten</h1>
     <div class="container my-3">
+        <!-- playlistname und duration -->
         <table class="table table-striped table-bordered" id="data-table">  
             <tbody>
 
@@ -27,6 +28,7 @@
         </table>
     </div>
     <strong>Content in Playlist:</strong>
+    <!--contents der playlist in tabelle-->
     <div class="container my-3">
         <table class="table table-striped table-bordered" id="content-table">  
             <thead class="table-dark">

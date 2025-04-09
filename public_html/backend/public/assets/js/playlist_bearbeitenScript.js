@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let containsData = [];
     let contentData = [];
 
+    //playlistdaten holen
     function fetchPlaylistData() {
         const req = `${apiurl}/playlist/getThis?table=playlist&id=${playlistID}`;
 
@@ -36,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(error => console.error('Error fetching contains data:', error));
     }
 
+    //contentdaten holen
     function fetchContentData() {
         //const req = `${apiurl}/content/getThis?id=${containsData.content_ID}`;
         let get = 0;
@@ -73,11 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
+    //arrays leeren / zurücksetzten
     function reset(){
         containsData = [];
         contentData = [];
     }
 
+    //füllen der tabelle mit playlistname und dauer
     function populateDataTable(playlist) {
         ownDataTableBody.innerHTML = `
             <tr>
@@ -96,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
+    //zum bearbeiten des playlistnamens
     window.editPlaylistName = function() {
         const newName = prompt('Neuer Dateiname:');
         if (newName) {
@@ -122,6 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    //tabelle befüllen mit contents der playlist
     function populateContentTable() {
         contentTableBody.innerHTML = contentData.map((content) =>{
             content= content[0]; 
@@ -164,6 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
     }
 
+    //dauer der playlist aktuellieren (wenn von einem content die dauer verändert wird)
     function updatePlaylistDuration(){
         console.log("playlist duration");
         let newDuration = 0;
@@ -203,6 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
     }
 
+    //dauer eines contents bearbeiten
     window.editDuration = function(id) {
         const index = containsData.findIndex(item => item.content_ID === id);
         if (index === -1) return;
@@ -237,6 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     };
 
+    //reihenfolge des contents in der playlist ändern
     window.editOrder = function(id) {
         console.log("helo");
         
@@ -270,6 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    //weiteren content zur playlist hinzufügen
     window.contentDazu = function() {
         console.log("add content");
 

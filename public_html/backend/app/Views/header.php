@@ -2,6 +2,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 <link rel="stylesheet" href="https://use.typekit.net/xph3llu.css">
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <!--menuleiste-->
     <div class="container-fluid">
         <ul class="navbar-nav w-100 d-flex justify-content-around">
             <li class="nav-item dropdown">

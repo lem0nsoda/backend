@@ -12,6 +12,16 @@ h3 {
     color: #FFFFFF;
 }
 
+p{
+    color: black;
+    font-size: 110% !important;
+    padding: 20px;
+    text-align: left;
+    margin-left: -15px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
 .btn-primary {
     background-color: #003563;
     border-color: #003563;
@@ -49,14 +59,10 @@ input.form-control {
 }
 
 #day, #month, #start-time{
-    width: 85px;
+    width: 95px;
     margin-right: 5px;
     margin-top: 10px;
-}
-
-#howoften{
-    width: 85px;
-    margin-left: -15px;
+    margin-bottom: 20px;
 }
 
 button.btn {
@@ -98,4 +104,29 @@ a.btn:hover {
     border-color: #3b2500 !important;
     border-radius: 6px;
     color: white !important;
+}
+
+#howoften{
+    width: 85px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+}
+
+#howoftenstyle{
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+}
+
+#gesdauer{
+    margin-left: -10px;
+    margin-bottom: 0px;
+}
+
+#enddatum{
+    margin-left: -15px;
+    margin-right: 0px;
+    margin-bottom: -55px;
+    margin-top: -20px;
 }

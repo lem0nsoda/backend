@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.querySelector('#content-table tbody');
 
+    //lädt Daten
     function fetchData() {
         const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
 
@@ -20,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(error => console.error('Error fetching data:', error));
     }
 
+    //tabelle (tbody) befüllen
     function populateTable(rows) {
         tableBody.innerHTML = rows.map(row => `
             <tr>
@@ -41,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `).join('');
     }
 
+    //zeile löschen und über API speichern/aktuellisieren
     window.deleteRow = function(id) {
         if (confirm('Möchten Sie diesen Eintrag wirklich löschen?')) {
             const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";

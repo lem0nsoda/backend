@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     save.addEventListener('click', () => safePlaylist());
 
+    //daten holen
     fetch(req)
         .then(response => response.json())
         .then(data => {
@@ -21,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error fetching data:', error));
 
+    //tabelle mit daten/content befüllen
     function populateTable(data) {
         tableBody.innerHTML = data.map(item => `
             <tr draggable="true" data-json='${JSON.stringify(item)}' data-id="${item.id}" data-type="${item.type}">
@@ -41,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-
+    //vorschaubilder des content in tabelle anzeige/einfügen
     function loadContentPreviews(rows) {
         rows.forEach(row => {
             const cell = document.querySelector(`tr[data-id='${row.id}'] .preview-cell`);
@@ -75,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    //von tabelle ins drop-feld ziehen können
     previewArea.addEventListener('dragover', e => e.preventDefault());
     previewArea.addEventListener('drop', e => {
         e.preventDefault();
@@ -83,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         addToPreview(item);
     });
 
+    //wenn aus tabelle ins drop-feld gezogen wurde, die anzeige der daten die ins dropfeld gezogen wurden (vorschaubild, duration, name,..)
     function addToPreview(item) {
         const div = document.createElement('div');
         div.className = 'preview-item';
@@ -123,7 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 .catch(error => console.error('Error loading preview:', error));
 
         
-
         const decreaseBtn = div.querySelector('.minus');
         const increaseBtn = div.querySelector('.plus');
         const durationSpan = div.querySelector('.duration');
@@ -145,6 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
         TotalDuration();
     }
 
+    //anzeige der gesamtdauer der playlist (einzelne contentzeiten zusammengezählt)
     function TotalDuration() {
         let total = 0;
         Duration = [...previewArea.children].map(el => {
@@ -158,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return total;
     }
 
+    //speichern der playlist (durch speicherrbutton und eingabe eines playlistnamens)
     function safePlaylist(){
         let name = prompt('Playlist Name:');
         let req = apiurl + "/playlist/addPlaylist";

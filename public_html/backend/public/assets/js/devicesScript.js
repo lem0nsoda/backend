@@ -1,60 +1,63 @@
-
-
 document.addEventListener('DOMContentLoaded', function () {
 
-
+    // api-url 
     const apiurl = "https://digital-signage.htl-futurezone.at/api/index.php";
+    // anfrage-url für clients mit status 1 (online)
     const req = apiurl + "/client/getBy?where=client_status&is=1&limit=100";
 
+    // container, in dem die clients als divs angezeigt werden
     const clientsContainer = document.getElementById('clientsList');
-    const SCALE_FACTOR = 0.3; // Skalierungsfaktor
+    const SCALE_FACTOR = 0.3; // skalierungsfaktor für anzeigegröße
 
+    // daten vom server laden (aktive clients) und anzeigen
     fetch(req)
         .then(response => {
             if (!response.ok) {
-                throw new Error(`Fehler beim Laden der JSON-Datei: ${response.statusText}`);
+                throw new Error(`fehler beim laden der json-datei: ${response.statusText}`);
             }
             return response.json();
         })
         .then(clientsList => {
-            clientsContainer.innerHTML = '';
+            clientsContainer.innerHTML = ''; // container leeren
             clientsList.map(client => {
                 console.log(client);
-                const scaledWidth = Math.max(50, client.width * SCALE_FACTOR); // Minimiere zu kleine Rechtecke
+                // berechne skalierte größe, mit mindestgröße von 50px
+                const scaledWidth = Math.max(50, client.width * SCALE_FACTOR);
                 const scaledHeight = Math.max(50, client.height * SCALE_FACTOR);
+                // client als rechteck hinzufügen
                 addClientToContainer(client, scaledWidth, scaledHeight);
             });
         })
-        .catch(error => console.error('Fehler beim Laden der JSON-Daten:', error));
+        .catch(error => console.error('fehler beim laden der json-daten:', error));
 
-    // Füge Rechteck (Client) in den Container ein
+    // erstellt ein div für einen client und fügt es in den container ein
     function addClientToContainer(client, width, height) {
         const clientDiv = document.createElement('div');
         clientDiv.classList.add('client');
         clientDiv.setAttribute('id', `client-${client.id}`);
 
-        // Setze Breite und Höhe (skaliert)
+        // breite und höhe (skaliert)
         clientDiv.style.width = `${width}px`;
         clientDiv.style.height = `${height}px`;
 
-        // Zufällige Position innerhalb des Containers
+        // zufällige position im container (mit grenzen)
         clientDiv.style.left = `${Math.random() * (clientsContainer.clientWidth - width)}px`;
         clientDiv.style.top = `${Math.random() * (clientsContainer.clientHeight - height)}px`;
 
-        // Inhalte hinzufügen
+        // inhalt im div anzeigen
         clientDiv.innerHTML = `
-            <p>ClientID: ${client.id}</p>
-            <p>Screen: ${client.width} x ${client.height}</p>
+            <p>clientid: ${client.id}</p>
+            <p>screen: ${client.width} x ${client.height}</p>
         `;
 
-        // Füge das Element dem Container hinzu
+        // div zum container hinzufügen
         clientsContainer.appendChild(clientDiv);
 
-        // Dragging aktivieren
+        // drag-and-drop aktivieren
         enableDragging(clientDiv);
     }
 
-    // Drag-and-Drop
+    // ermöglicht das verschieben (dragging) von client-divs
     function enableDragging(clientDiv) {
         let offsetX, offsetY;
 
@@ -64,13 +67,14 @@ document.addEventListener('DOMContentLoaded', function () {
             offsetX = e.clientX - rect.left;
             offsetY = e.clientY - rect.top;
 
+            // mausbewegung verfolgen
             function onMouseMove(e) {
                 const containerRect = clientsContainer.getBoundingClientRect();
 
                 let newX = e.clientX - containerRect.left - offsetX;
                 let newY = e.clientY - containerRect.top - offsetY;
 
-                // Grenzen beachten
+                // grenzen prüfen
                 newX = Math.max(0, Math.min(newX, clientsContainer.clientWidth - clientDiv.offsetWidth));
                 newY = Math.max(0, Math.min(newY, clientsContainer.clientHeight - clientDiv.offsetHeight));
 
@@ -78,6 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 clientDiv.style.top = `${newY}px`;
             }
 
+            // beim loslassen der maus das dragging beenden
             function onMouseUp() {
                 document.removeEventListener('mousemove', onMouseMove);
                 document.removeEventListener('mouseup', onMouseUp);
@@ -88,43 +93,41 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    //TABELLE
+    // daten-tabelle anzeigen
 
     const tableBody = document.querySelector('#content-table tbody');
 
+    // daten für die tabelle laden
     function fetchData(sortOption = 'id-asc') {
         sort = sortOption.split('-');
-
         const req = apiurl + "/client/get?limit=100&by=" + sort[0] + "&order=" + sort[1];
 
         fetch(req)
             .then(response => {
-                if (!response.ok) throw new Error('Network response was not ok');
+                if (!response.ok) throw new Error('network response was not ok');
                 return response.json();
             })
             .then(data => {
-                console.log('Fetched data:', data);
-                populateTable(data);
-                
-                new DataTable('#content-table');
+                console.log('fetched data:', data);
+                populateTable(data); // tabelle befüllen
+                new DataTable('#content-table'); 
             })
-            .catch(error => console.error('Error fetching data:', error));
+            .catch(error => console.error('error fetching data:', error));
     }
 
+    //status in tabelle, 0/1 zu on/offline
     function status(statusInt){
         let statusString;
 
         switch(statusInt){
-            case 1: statusString = "online";
-                break;
-            case 0: statusString = "offline";
-                break;
-            default: statusString = "undefined - " + statusInt;
-                break;
+            case 1: statusString = "online"; break;
+            case 0: statusString = "offline"; break;
+            default: statusString = "undefined - " + statusInt; break;
         }
         return statusString;
     }
 
+    // füllt tabelle mit daten
     function populateTable(rows) {
         tableBody.innerHTML = rows.map(row => `
             <tr>
@@ -150,89 +153,90 @@ document.addEventListener('DOMContentLoaded', function () {
                 </td>
             </tr>
         `).join('');
-
     }
 
-    // Buttons zum ändern und löschen
-
+    //löscht eine zeile (nach bestätigung mit alert) 
     window.deleteRow = function(id) {
-        if (confirm('Möchten Sie diesen Eintrag wirklich löschen?')) {
+        if (confirm('möchten sie diesen eintrag wirklich löschen?')) {
             fetch(`${apiurl}/client/delete`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'content-type': 'application/json' },
                 body: JSON.stringify({ id: id })
             })
                 .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
+                    if (!response.ok) throw new Error('network response was not ok');
                     return response.json();
                 })
                 .then(data => {
-                    console.log('Deleted data:', data);
-                    fetchData();
+                    console.log('deleted data:', data);
+                    fetchData(); // tabelle neu laden
                 })
-                .catch(error => console.error('Error deleting data:', error));
+                .catch(error => console.error('error deleting data:', error));
         }
     };
 
     window.useClient = function(id) {
-            fetch(`${apiurl}/client/use`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: id })
+        fetch(`${apiurl}/client/use`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ id: id })
+        })
+            .then(response => {
+                if (!response.ok) throw new Error('network response was not ok');
+                return response.json();
             })
-                .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Deleted data:', data);
-                    fetchData();
-                })
-                .catch(error => console.error('Error deleting data:', error));
+            .then(data => {
+                console.log('client activated:', data);
+                fetchData(); // tabelle neu laden
+            })
+            .catch(error => console.error('error activating client:', error));
     };
 
+    //bearbeitung des Clientnamens
     window.editName = function(id) {
-        const newName = prompt('Neuer Gerätename:');
+        const newName = prompt('neuer gerätename:');
         if (newName) {
             fetch(`${apiurl}/client/update`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'content-type': 'application/json' },
                 body: JSON.stringify({ id: id, name: newName })
             })
                 .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
+                    if (!response.ok) throw new Error('network response was not ok');
                     return response.json();
                 })
                 .then(data => {
-                    console.log('Updated name:', data);
-                    fetchData();
+                    console.log('updated name:', data);
+                    fetchData(); // tabelle aktualisieren
                 })
-                .catch(error => console.error('Error updating name:', error));
+                .catch(error => console.error('error updating name:', error));
         }
     };
 
+    //Bearbeitung der position des clients (x/y)
     window.editPos = function(id) {
-        const xy = prompt('Neue Kooridnaten: X/Y').split("/");
+        const xy = prompt('neue kooridnaten: x/y').split("/");
         const x = xy[0];
         const y = xy[1];
-    
+
         if (x && y) {
             fetch(`${apiurl}/client/update`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: id, xPosition: x , yPosition: y})
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify({ id: id, xPosition: x , yPosition: y })
             })
                 .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
+                    if (!response.ok) throw new Error('network response was not ok');
                     return response.json();
                 })
                 .then(data => {
-                    console.log('Updated name:', data);
-                    fetchData();
+                    console.log('updated position:', data);
+                    fetchData(); // tabelle aktualisieren
                 })
-                .catch(error => console.error('Error updating name:', error));
+                .catch(error => console.error('error updating position:', error));
         }
     };
 
+    // lade die daten beim seitenaufruf
     fetchData();
 });
